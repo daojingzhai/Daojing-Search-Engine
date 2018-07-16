@@ -5,7 +5,7 @@ It supports bool search. Use '&' to do AND search and ' ' to do OR search.
 
 For quick implement:
 cd src folder in Terminal.
-- make crawl（Crawl and segmentation）
+- make crawl（Crawling and segmentation, creat graph）
 - make inv（Creat inverted table and indegree table）
 - make search（Creat Search Enginee）
 - make clean（Clean data）
