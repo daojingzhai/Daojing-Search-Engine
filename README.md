@@ -1,13 +1,14 @@
 # Daojing-Search-Engine
-本文件夹内含
-- Demo_Daojing: 测试案例视频
-- 151250189_翟道京：实验报告
-- main.unix：工程文件，可在Mac端运行
-- src：源代码
+Daojing Search Engine is a simple chinese search engine and browser for data structure course, based on CSDN blogs. This is the final project of my data structure course.
 
-如果进行全进程测试，在Mac terminal中打开src文件夹，使用下列指令
-- make crawl（挖掘与分词，目前demo版本只挖掘10个网站，放心测试）
-- make inv（建立倒排表）
-- make search（打开搜索引擎开始搜索）
-- make clean（清除数据）
-- make run（一整套流程走下去）
+It supports bool search. Use '&' to do AND search and ' ' to do OR search.
+
+For quick implement:
+cd src folder in Terminal.
+- make crawl（Crawl and segmentation）
+- make inv（Creat inverted table and indegree table）
+- make search（Creat Search Enginee）
+- make clean（Clean data）
+- make run（Run the whole process）
+
+Instruction video: Demo_Daojing.mov
