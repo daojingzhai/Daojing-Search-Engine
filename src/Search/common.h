@@ -1,0 +1,16 @@
+#define WARN "\033[31m\033[1m"
+#define CLR "\033[0m\n"
+#define BLK "\033[31m"
+#define RED "\033[31m"
+#define GRN "\033[32m"
+#define YLW "\033[33m"
+#define BLU "\033[34m"
+#define PUP "\033[35m"
+#define WHT "\033[37m"
+#define THK "\033[1m"
+#define CLEAR() system("clear")
+#define max_page 10
+#define index_path "../Data/index.txt"
+#define indegree_path "../Data/indegree.txt"
+#define content_path "../Data/content/"
+#define README_path "../Data/README"
