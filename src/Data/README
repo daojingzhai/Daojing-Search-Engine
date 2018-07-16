@@ -1,0 +1,12 @@
+DJ Search Engine By Daojing Zhai, 2018
+
+Original Website: CSDN
+
+Database size: 10 pages
+
+Feature:
+	Support boolean retrieval
+
+CMD:
+	AND search: a&b&c...  
+	OR search: a|b|c...   

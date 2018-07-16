@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="https://blog.csdn.net/qq_36594966/article/details/81046437"/> 
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="referrer" content="always">
+    <meta name="description" content="sql的分类：DDL：数据定义语言    操作对象：数据库和表    关键字：create alter dropDML：数据操作语言    操作对象：记录    关键字：insert，update，deleteDQL：数据查询语言    操作对象：记录    关键字：selectDCL：数据控制语言    操作对象：用户    关键字：SET..." />
+    <meta name="keywords" content="sql" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+    <meta name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848">
+    <script src="https://csdnimg.cn/release/phoenix/vendor/tingyun/tingyun-rum-blog.js"></script>
+
+    <link href="https://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">
+    <title>数据库的基本用法 - CSDN博客</title>
+    
+            <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/detail-57e3201eaa.min.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/themes/skin-blackboard/skin-blackboard-916eb1673a.min.css">
+
+    <script type="text/javascript">
+        var username = "qq_36594966";
+        var blog_address = "https://blog.csdn.net/qq_36594966";
+        var static_host = "https://csdnimg.cn/release/phoenix/";
+        var currentUserName = ""; 
+        var isShowAds = true;
+        var isOwner = false;
+        var loginUrl = "https://passport.csdn.net/account/login?from=https://blog.csdn.net/qq_36594966/article/details/81046437"
+        var blogUrl = "https://blog.csdn.net/";
+        //页面皮肤样式
+        var curSkin = "skin-blackboard";
+    </script>
+    <script type="text/javascript">
+        // Traffic Stats of the entire Web site By baidu
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6bcd52f51e9b3dce32bec4a3997715ac";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+        // Traffic Stats of the entire Web site By baidu end
+    </script>
+    <script src="https://csdnimg.cn/public/common/libs/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="https://csdnimg.cn/rabbit/exposure-click/main-1.0.6.js"></script>
+    <!-- 新版上报 -->
+    <script src="//g.csdnimg.cn/track/1.0.1/track.js" type="text/javascript"></script>
+    <!-- 新版上报end -->
+            <link rel="stylesheet" href="https://csdnimg.cn/public/sandalstrap/1.3/css/sandalstrap.min.css"> 
+    <style>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </style>
+</head>
+<body>    
+    <link rel="stylesheet" href="https://csdnimg.cn/public/common/toolbar/content_toolbar_css/content_toolbar.css">
+    <script id="toolbar-tpl-scriptId" src="https://csdnimg.cn/public/common/toolbar/js/content_toolbar.js" type="text/javascript" domain="https://blog.csdn.net/"></script>
+    <script src="https://csdnimg.cn/public/sandalstrap/1.3/fonts/csdnc/csdnc.js"></script><link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/blog_code-c3a0c33d5c.css">
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/vendor/pagination/paging.css">
+<script type="text/javascript" src="//static.mediav.com/js/mvf_news_feed.js"></script>
+<div style="display:none;">
+	<img src="" onerror='setTimeout(function(){if(!/(csdn.net|iteye.com|baiducontent.com|googleusercontent.com|360webcache.com|sogoucdn.com|bingj.com|baidu.com)$/.test(window.location.hostname)){window.location.href="\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x77\x77\x2e\x63\x73\x64\x6e\x2e\x6e\x65\x74"}},3000);'>
+</div>
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/chart-3456820cac.css" />
+
+
+<header>
+	<div class="container d-flex clearfix">
+		<div class="title-box">
+			<h2 class="title-blog">
+				<a href="https://blog.csdn.net/qq_36594966">qq_36594966的博客</a>
+			</h2>
+			<p class="description"></p>
+		</div>
+		<div class="opt-box d-flex justify-content-end">
+			<a class="btn btn-sm" href="https://blog.csdn.net/qq_36594966/rss/list">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#csdnc-rss"></use>
+					</svg>RSS订阅</a>
+					</div>
+	</div>
+</header><script src="https://dup.baidustatic.com/js/ds.js"></script>
+<div class="container clearfix pt0" id="mainBox">
+    <main>
+        <div class="blog-content-box">
+	<div class="article-title-box">
+			<span class="article-type type-1 float-left">原</span>		<h1 class="title-article">数据库的基本用法</h1>
+	</div>
+	<div class="article-info-box">
+		<div class="article-bar-top d-flex">
+												<span class="time">2018年07月14日 19:09:36</span>
+			<div class="float-right">
+				<span class="read-count">阅读数：19</span>
+											</div>
+		</div>
+	</div>
+	<article>
+		<div id="article_content" class="article_content clearfix csdn-tracking-statistics" data-pid="blog"  data-mod=popu_307  data-dsm = "post" >
+                    <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-e2445db1a8.css" />
+						<div class="htmledit_views">
+                <p></p><h1>sql的分类：<br /></h1><p></p><h2>DDL：数据定义语言<br /></h2><p>    操作对象：数据库和表<br /></p><p>    关键字：create alter drop</p><p>DML：数据操作语言</p><p>    操作对象：记录</p><p>    关键字：insert，update，delete</p><p></p><h2>DQL：数据查询语言<br /></h2><p>    操作对象：记录<br /></p><p>    关键字：select<br /></p><p></p><h2>DCL：数据控制语言<br /></h2><p>    操作对象：<span style="background-color:transparent;color:rgb(79,79,79);font-family:'PingFang SC', 'Microsoft YaHei', SimHei, Arial, SimSun;font-size:16px;font-style:normal;font-variant:normal;font-weight:400;letter-spacing:normal;line-height:26px;text-align:justify;text-decoration:none;text-indent:0px;text-transform:none;word-spacing:0px;">用户</span><br /></p><p></p><p>    关键字：commit，savepoint，rollback，set transaction</p><p></p><p></p><h1>常用得数据库语句<br /></h1><p></p><h2>登陆数据库<br /></h2><div>语法</div><pre><code class="language-sql">mysql -uroot -proot</code></pre><p><strong><span style="font-size:18px;">退出<span style="text-align:justify;color:rgb(79,79,79);text-transform:none;line-height:32px;text-indent:0px;letter-spacing:normal;font-family:'PingFang SC', 'Microsoft YaHei', SimHei, Arial, SimSun;font-style:normal;font-variant:normal;text-decoration:none;word-spacing:0px;background-color:transparent;">数据库</span></span></strong></p><pre><code class="language-sql">exit
+quit
+\q
+</code></pre><p><span style="background-color:transparent;color:rgb(79,79,79);font-size:24px;font-style:normal;font-variant:normal;font-weight:700;letter-spacing:normal;line-height:32px;text-align:justify;text-decoration:none;text-indent:0px;text-transform:none;word-spacing:0px;">显示当前服务器数据库列表</span></p><p></p><pre><code class="language-sql">show databases</code></pre><span style="background-color:transparent;color:rgb(79,79,79);font-family:'PingFang SC', 'Microsoft YaHei', SimHei, Arial, SimSun;font-size:24px;font-style:normal;font-variant:normal;font-weight:700;letter-spacing:normal;line-height:32px;text-align:justify;text-decoration:none;text-indent:0px;text-transform:none;word-spacing:0px;">显示当前数据库表的列表</span><br /><pre><code class="language-sql">show tables</code></pre><br /><br />            </div>
+                </div>
+				<div class="hide-article-box text-center">
+			<a class="btn btn-red-hollow" id="btn-readmore" data-track-view='{"mod":"popu_376","con":",https://blog.csdn.net/qq_36594966/article/details/81046437,"}' data-track-click='{"mod":"popu_376","con":",https://blog.csdn.net/qq_36594966/article/details/81046437,"}'>阅读更多</a>
+		</div>
+        	</article>
+	
+		<div class="article-bar-bottom">
+						<div class="tags-box artic-tag-box">
+			<span class="label">文章标签：</span>
+						<a class="tag-link" href="http://so.csdn.net/so/search/s.do?q=sql&t=blog" target="_blank">sql						</a>
+		</div>
+						<div class="tags-box">
+			<span class="label">个人分类：</span>
+						<a class="tag-link" href="https://blog.csdn.net/qq_36594966/article/category/7803339"  target="_blank">sql						</a>
+		</div>
+								<div class="tags-box hot-word">
+			<span class="label">相关热词：</span>
+						<a class="tag-link" href="https://blog.csdn.net/tyler93/article/details/78737129" target="_blank">
+			数据库on			</a>
+						<a class="tag-link" href="https://blog.csdn.net/u012411414/article/details/41048861" target="_blank">
+			数据库÷			</a>
+						<a class="tag-link" href="https://blog.csdn.net/xiaoyiyz/article/details/50727122" target="_blank">
+			π数据库			</a>
+						<a class="tag-link" href="https://blog.csdn.net/xc008/article/details/2872310" target="_blank">
+			on数据库			</a>
+						<a class="tag-link" href="https://blog.csdn.net/linan_pin/article/details/70144203" target="_blank">
+			数据库into			</a>
+					</div>
+			</div>
+	
+	<!-- !empty($pre_next_article[0]) -->
+				<div class="related-article related-article-next text-truncate">
+		<a href="https://blog.csdn.net/qq_36594966/article/details/81048366">
+			<span>下一篇</span>mysql的单表操作		</a>
+	</div>
+	</div>
+<script>
+    $(".MathJax").remove();
+</script>
+
+<script type="text/javascript" src="https://static-blog.csdn.net/mdeditor/public/res/bower-libs/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+			"HTML-CSS": {
+					linebreaks: { automatic: true, width: "94%container" },
+					imageFont: null
+			},
+			tex2jax: {
+				preview: "none"
+			},
+			mml2jax: {
+				preview: 'none'
+			}
+	});
+</script>
+<script>
+	(function(){
+		var btnReadmore = $("#btn-readmore");
+		if(btnReadmore.length>0){
+			var winH = $(window).height();
+			var articleBox = $("div.article_content");
+			var artH = articleBox.height();
+			if(artH > winH*2){
+				articleBox.css({
+					'height':winH*2+'px',
+					'overflow':'hidden'
+				})
+				btnReadmore.click(function(){
+					articleBox.removeAttr("style");
+					$(this).parent().remove();
+				})
+			}else{
+				btnReadmore.parent().remove();
+			}
+		}
+	})()
+</script>        <div data-track-view='{"mod":"popu_625","con": ",https://blog.csdn.net/qq_36594966/article/details/81046437,from_360"}' style="margin-top: 8px;padding: 20px;background-color: #fff;overflow: hidden;" id="adt0"></div>
+            <script>
+                var adWidth = $("div.blog-content-box").outerWidth() - 40;
+                NEWS_FEED({
+                    w: adWidth,
+                    h : 130,
+                    showid : "s02a31",
+                    placeholderId: "adt0",
+                    inject : "define",
+                    define : {
+                    imagePosition : "left",
+                    imageBorderRadius : 0,
+                    imageWidth: 231,
+                    imageHeight: 130,
+                    imageFill : "clip",
+                    displayImage : true,
+                    displayTitle : true,
+                    titleFontSize: 20,
+                    titleFontColor: "#333",
+                    titleFontFamily : "Microsoft Yahei",
+                    titleFontWeight: "bold",
+                    titlePaddingTop : 0,
+                    titlePaddingRight : 0,
+                    titlePaddingBottom : 10,
+                    titlePaddingLeft : 16,
+                    displayDesc : true,
+                    descFontSize: 14,
+                    descFontColor: "#6b6b6b",
+                    descFontFamily : "Microsoft Yahei",
+                    paddingTop : 0,
+                    paddingRight : 0,
+                    paddingBottom : 0,
+                    paddingLeft : 0,
+                    backgroundColor: "#fff",
+                    hoverColor: "#ca0c16"
+                    }
+                })
+            </script>        <a id="commentBox"></a>
+<div class="comment-box">
+	  	<div class="unlogin-box text-center">
+		想对作者说点什么？
+		<!-- $curl 当前地址 -->
+		<a href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/qq_36594966/article/details/81046437#commentBox" class="btn btn-sm btn-red">我来说一句</a>
+	</div>
+			<div class="comment-list-container">
+		<a id="comments"></a>
+		<div class="comment-list-box">
+		</div>
+		<div id="commentPage" class="pagination-box d-none"></div>
+		<div class="opt-box text-center">
+			<button class="btn btn-sm btn-link-blue" id="btnMoreComment"></button>
+		</div>
+	</div>
+</div>        <div class="recommend-box">
+            		<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/cfy137000/article/details/80038883,BlogCommendFromQuerySearch_0"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/cfy137000/article/details/80038883,BlogCommendFromQuerySearch_0"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/cfy137000/article/details/80038883" target="_blank">
+				MySQL<em>基本</em><em>用法</em>(一)			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/cfy137000/article/details/80038883" target="_blank" >
+				数据库
+
+
+
+1. 数据库概述
+
+
+
+1.1 数据库概述
+
+
+
+什么是数据库
+
+数据库就是存储数据的仓库，其本质是一个文件系统，数据按照特定的格式将数据存储起来，用户可以对数据库中的数据进行增加，修改...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/cfy137000" title="cfy137000" target="_blank">
+					<img src="https://avatar.csdn.net/1/C/B/3_cfy137000.jpg" alt="cfy137000" class="avatar-pic">
+					<span class="name">cfy137000</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2018-04-22 14:44:38</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：762</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/pengdean/article/details/1783169,BlogCommendFromQuerySearch_1"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/pengdean/article/details/1783169,BlogCommendFromQuerySearch_1"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/pengdean/article/details/1783169" target="_blank">
+				sql<em>基本</em><em>用法</em>			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/pengdean/article/details/1783169" target="_blank" >
+				1 、普通SQL语句可以用Exec执行eg: Select * from tableName Exec(select * from tableName) Exec sp_executesql Nsel...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/pengdean" title="pengdean" target="_blank">
+					<img src="https://avatar.csdn.net/2/5/6/3_pengdean.jpg" alt="pengdean" class="avatar-pic">
+					<span class="name">pengdean</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2007-09-13 09:45:00</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：522</span>
+			</p>
+		</div>
+	</div>
+									<div class="recommend-item-box recommend-ad-box" id="ad1"></div>
+				<script>
+				var width = $("div.recommend-box").outerWidth() - 48;
+					NEWS_FEED({
+						w: width,
+						h : 90,
+						showid : 'GNKXx7',
+						placeholderId: "ad1",
+						inject : 'define',
+						define : {
+							imagePosition : 'left',
+							imageBorderRadius : 0,
+							imageWidth: 120,
+							imageHeight: 90,
+							imageFill : 'clip',
+							displayImage : true,
+							displayTitle : true,
+							titleFontSize: 20,
+							titleFontColor: '#333',
+							titleFontFamily : 'Microsoft Yahei',
+							titleFontWeight: 'bold',
+							titlePaddingTop : 0,
+							titlePaddingRight : 0,
+							titlePaddingBottom : 10,
+							titlePaddingLeft : 16,
+							displayDesc : true,
+							descFontSize: 14,
+							descPaddingLeft: 14,
+							descFontColor: '#6b6b6b',
+							descFontFamily : 'Microsoft Yahei',
+							paddingTop : 0,
+							paddingRight : 0,
+							paddingBottom : 0,
+							paddingLeft : 0,
+							backgroundColor: '#fff',
+							hoverColor: '#ca0c16'
+						}
+					})
+				</script>
+
+			
+				<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/lpch1987/article/details/52813114,BlogCommendFromQuerySearch_2"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/lpch1987/article/details/52813114,BlogCommendFromQuerySearch_2"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/lpch1987/article/details/52813114" target="_blank">
+				sqlite使用总结			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/lpch1987/article/details/52813114" target="_blank" >
+				sqlite是一个比较小巧的数据库，最大的好处就是无安装嵌入式，文档和资料也比较多（我早期做windows应用开发使用access作为数据库，资料太难查了），当然功能也远没有mysql等高级数据库强大...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/lpch1987" title="lpch1987" target="_blank">
+					<img src="https://avatar.csdn.net/0/B/9/3_lpch1987.jpg" alt="lpch1987" class="avatar-pic">
+					<span class="name">lpch1987</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2016-10-14 10:12:26</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：606</span>
+			</p>
+		</div>
+	</div>
+						<div class="recommend-item-box recommend-download-box clearfix" data-track-view='{"mod":"popu_614","con":",https://download.csdn.net/download/dier__/8547931,BlogCommendFromQuerySearch_3"}' data-track-click='{"mod":"popu_614","con":",https://download.csdn.net/download/dier__/8547931,BlogCommendFromQuerySearch_3"}'>
+			<div class="content float-left">
+				<h4 class="text-truncate">
+					<a href="https://download.csdn.net/download/dier__/8547931" target="_blank">
+						<em>数据库</em>SQL语言					</a>
+				</h4>
+				<p>
+					<span class="data">2015年03月30日 </span>
+					<span class="size">1.69MB</span>
+					<span class="type">下载</span>
+				</p>
+			</div>
+			<div class="img-box float-right">
+				<a href="https://download.csdn.net/download/dier__/8547931" target="_blank" strategy="BlogCommendFromQuerySearch_3">
+					<img src="https://csdnimg.cn/release/download/old_static/images/minetype/ppt.svg" alt="">
+				</a>
+			</div>
+		</div>
+						<div class="recommend-item-box recommend-download-box clearfix" data-track-view='{"mod":"popu_614","con":",https://download.csdn.net/download/loskylin/3272647,BlogCommendFromQuerySearch_4"}' data-track-click='{"mod":"popu_614","con":",https://download.csdn.net/download/loskylin/3272647,BlogCommendFromQuerySearch_4"}'>
+			<div class="content float-left">
+				<h4 class="text-truncate">
+					<a href="https://download.csdn.net/download/loskylin/3272647" target="_blank">
+						orcle<em>基本</em>培训ppt文件					</a>
+				</h4>
+				<p>
+					<span class="data">2011年05月12日 </span>
+					<span class="size">2.17MB</span>
+					<span class="type">下载</span>
+				</p>
+			</div>
+			<div class="img-box float-right">
+				<a href="https://download.csdn.net/download/loskylin/3272647" target="_blank" strategy="BlogCommendFromQuerySearch_4">
+					<img src="https://csdnimg.cn/release/download/old_static/images/minetype/rar.svg" alt="">
+				</a>
+			</div>
+		</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/CharmingDang/article/details/78396959,BlogCommendFromQuerySearch_5"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/CharmingDang/article/details/78396959,BlogCommendFromQuerySearch_5"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/CharmingDang/article/details/78396959" target="_blank">
+				SQL<em>数据库</em>select<em>基本</em>使用			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/CharmingDang/article/details/78396959" target="_blank" >
+				Select基本语句
+基本语法：
+select 列名 from 　表名
+【例】从学生表(Student)中查询所有学生的学号        单列
+　select 学号 from 　Student
+【例...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/CharmingDang" title="CharmingDang" target="_blank">
+					<img src="https://avatar.csdn.net/0/7/E/3_charmingdang.jpg" alt="CharmingDang" class="avatar-pic">
+					<span class="name">CharmingDang</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2017-10-30 20:25:59</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：648</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box recommend-ad-box" id="a_d_feed_0"></div>
+			<script>
+				var width = $("div.recommend-box").outerWidth() - 48;
+				NEWS_FEED({
+					w: width,
+					h: 90,
+					showid: 'Afihld',
+					placeholderId: 'a_d_feed_0',
+					inject: 'define',
+					define: {
+						imagePosition: 'left',
+						imageBorderRadius: 0,
+						imageWidth: 120,
+						imageHeight: 90,
+						imageFill: 'clip',
+						displayImage: true,
+						displayTitle: true,
+						titleFontSize: 20,
+						titleFontColor: '#333',
+						titleFontFamily: 'Microsoft Yahei',
+						titleFontWeight: 'bold',
+						titlePaddingTop: 0,
+						titlePaddingRight: 0,
+						titlePaddingBottom: 10,
+						titlePaddingLeft: 16,
+						displayDesc: true,
+						descFontSize: 14,
+						descPaddingLeft: 14,
+						descFontColor: '#6b6b6b',
+						descFontFamily: 'Microsoft Yahei',
+						paddingTop: 0,
+						paddingRight: 0,
+						paddingBottom: 0,
+						paddingLeft: 0,
+						backgroundColor: '#fff',
+						hoverColor: '#ca0c16'
+					}
+				})
+			</script>
+			<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/qq_31059475/article/details/61205692,BlogCommendFromQuerySearch_6"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/qq_31059475/article/details/61205692,BlogCommendFromQuerySearch_6"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/qq_31059475/article/details/61205692" target="_blank">
+				SQL server<em>基本</em>使用示例一			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/qq_31059475/article/details/61205692" target="_blank" >
+				/创建数据库方法一/ 
+create database Test1  
+on primary 
+(/以下是主数据文件的属性/ 
+    name =’Test1’,–主数据文件的逻辑名称 
+    f...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/qq_31059475" title="qq_31059475" target="_blank">
+					<img src="https://avatar.csdn.net/E/E/4/3_qq_31059475.jpg" alt="qq_31059475" class="avatar-pic">
+					<span class="name">qq_31059475</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2017-03-10 20:02:45</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：327</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/zyf_12345678/article/details/80279292,BlogCommendFromQuerySearch_7"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/zyf_12345678/article/details/80279292,BlogCommendFromQuerySearch_7"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/zyf_12345678/article/details/80279292" target="_blank">
+				<em>数据库</em>一般操作<em>用法</em>			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/zyf_12345678/article/details/80279292" target="_blank" >
+				    在现如今在众多的数据库管理工具而言，mysql无疑成为了大众所普遍接受与认可的数据库，其内置许多简单易操作的功能令人使用体验感受良好，其最多的优势无疑是开源 免费 使用范围广,跨平台支持性好,...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/zyf_12345678" title="zyf_12345678" target="_blank">
+					<img src="https://avatar.csdn.net/9/B/F/3_zyf_12345678.jpg" alt="zyf_12345678" class="avatar-pic">
+					<span class="name">zyf_12345678</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2018-05-11 11:57:37</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：13</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/zhaodongwoshini/article/details/53117167,BlogCommendFromQuerySearch_8"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/zhaodongwoshini/article/details/53117167,BlogCommendFromQuerySearch_8"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/zhaodongwoshini/article/details/53117167" target="_blank">
+				Oracle<em>数据库</em>的基础使用			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/zhaodongwoshini/article/details/53117167" target="_blank" >
+				oracle数据库的基础使用			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/zhaodongwoshini" title="zhaodongwoshini" target="_blank">
+					<img src="https://avatar.csdn.net/3/9/5/3_zhaodongwoshini.jpg" alt="zhaodongwoshini" class="avatar-pic">
+					<span class="name">zhaodongwoshini</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2016-11-10 16:37:30</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：10073</span>
+			</p>
+		</div>
+	</div>
+						<div class="recommend-item-box recommend-download-box clearfix" data-track-view='{"mod":"popu_614","con":",https://download.csdn.net/download/wangyong19781207/3697547,BlogCommendFromQuerySearch_9"}' data-track-click='{"mod":"popu_614","con":",https://download.csdn.net/download/wangyong19781207/3697547,BlogCommendFromQuerySearch_9"}'>
+			<div class="content float-left">
+				<h4 class="text-truncate">
+					<a href="https://download.csdn.net/download/wangyong19781207/3697547" target="_blank">
+						struts2_ognl<em>基本</em><em>用法</em>.doc					</a>
+				</h4>
+				<p>
+					<span class="data">2011年10月19日 </span>
+					<span class="size">29KB</span>
+					<span class="type">下载</span>
+				</p>
+			</div>
+			<div class="img-box float-right">
+				<a href="https://download.csdn.net/download/wangyong19781207/3697547" target="_blank" strategy="BlogCommendFromQuerySearch_9">
+					<img src="https://csdnimg.cn/release/download/old_static/images/minetype/doc.svg" alt="">
+				</a>
+			</div>
+		</div>
+			
+            <div class="recommend-loading-box">
+                <img src='https://csdnimg.cn/release/phoenix/images/feedLoading.gif'>
+            </div>
+            <div class="recommend-end-box">
+                <p class="text-center">没有更多推荐了，<a href="https://blog.csdn.net/" class="c-blue c-blue-hover c-blue-focus">返回首页</a></p>
+            </div>
+        </div>
+    </main>
+    <aside>
+		    <div id="asideProfile" class="aside-box">
+    <h3 class="aside-title">个人资料</h3>
+    <div class="profile-intro d-flex">
+        <div class="avatar-box d-flex justify-content-center flex-column">
+            <a href="https://blog.csdn.net/qq_36594966">
+                <img src="https://avatar.csdn.net/6/A/2/3_qq_36594966.jpg" class="avatar_pic">
+            </a>
+        </div>
+        <div class="user-info d-flex justify-content-center flex-column">
+            <p class="name csdn-tracking-statistics tracking-click" data-mod="popu_379">
+                <a href="https://blog.csdn.net/qq_36594966" target="_blank" class="text-truncate" id="uid">qq_36594966</a>
+            </p>
+                    </div>
+                <div class="opt-box d-flex justify-content-center flex-column">
+            <span  class="csdn-tracking-statistics tracking-click" data-mod="popu_379">
+                                <a class="btn btn-sm btn-red-hollow" href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/qq_36594966/article/details/81046437" target="_self">关注</a>
+                            </span>
+                    </div>
+            </div>
+    <div class="data-info d-flex item-tiling">
+                <dl class="text-center" title="6">
+                        <dt><a href="https://blog.csdn.net/qq_36594966?t=1">原创</a></dt>
+            <dd><a href="https://blog.csdn.net/qq_36594966?t=1"><span class="count">6</span></a></dd>
+                    </dl>
+        <dl class="text-center" title="1">
+            <dt>粉丝</dt>
+            <dd><span class="count" id="fan">1</span></dd>
+        </dl>
+        <dl class="text-center" title="0">
+            <dt>喜欢</dt>
+            <dd><span class="count">0</span></dd>
+        </dl>
+        <dl class="text-center" title="0">
+            <dt>评论</dt>
+            <dd><span class="count">0</span></dd>
+        </dl>
+    </div>
+    <div class="grade-box clearfix">
+        <dl>
+            <dt>等级：</dt>
+            <dd>
+                <a href="https://blog.csdn.net/home/help.html#level" title="1级,点击查看等级说明" target="_blank">
+                    <svg class="icon icon-level" aria-hidden="true">
+                        <use xlink:href="#csdnc-bloglevel-1"></use>
+                    </svg>
+                </a>
+            </dd>
+        </dl>
+        <dl>
+            <dt>访问：</dt>
+            <dd title="96">
+                96            </dd>
+        </dl>
+        <dl>
+            <dt>积分：</dt>
+            <dd title="61">
+                61            </dd>
+        </dl>
+        <dl title="1651271">
+            <dt>排名：</dt>
+            <dd>165万+</dd>
+        </dl>
+    </div>
+    </div>		    <div class="csdn-tracking-statistics mb8 box-shadow" data-pid="blog" data-mod="popu_4" style="height:250px;">
+    <div class="aside-content text-center" id="cpro_u2734133">
+              <script type="text/javascript" src="//cee1.iteye.com/lgyyovfyh.js"></script>
+          </div>
+</div>
+		    <div id="asideNewArticle" class="aside-box">
+    <h3 class="aside-title">最新文章</h3>
+    <div class="aside-content">
+        <ul class="inf_list clearfix csdn-tracking-statistics tracking-click" data-mod="popu_382">
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/qq_36594966/article/details/81052166" target="_blank">mysql的多表操作</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/qq_36594966/article/details/81048366" target="_blank">mysql的单表操作</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+		    		    <div id="asideCategory" class="aside-box">
+    <h3 class="aside-title">个人分类</h3>
+    <div class="aside-content">
+        <ul>
+                        <li>
+                <a href="https://blog.csdn.net/qq_36594966/article/category/7803339">
+                    sql                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/qq_36594966/article/category/7805212">
+                    hibernate                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                    </ul>
+    </div>
+    </div>
+		    <div id="asideArchive" class="aside-box">
+    <h3 class="aside-title">归档</h3>
+    <div class="aside-content">
+        <ul class="archive-list">
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/qq_36594966/article/month/2018/07">
+                    2018年7月                    <span class="count float-right">6篇</span>
+                </a>
+            </li>
+                    </ul>
+    </div>
+    </div>
+		    		<div id="asideFooter">
+			
+		<div class="aside-box">
+						<script type="text/javascript" src="//cee1.iteye.com/mhzzpwgzj.js"></script>
+					</div>
+				<div class="aside-box">
+			<div class="persion_article">
+			</div>
+		</div>
+	</div>
+</aside>
+<script src="https://csdnimg.cn/pubfooter/js/publib_footer-1.0.3.js" data-isfootertrack="false" type="text/javascript"></script>
+<script>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).remove();
+	})
+</script>
+</div>
+<div class="mask-dark"></div>
+<div class="pulllog-box" style="display: block;">
+	<div class="pulllog clearfix">
+		<span class="text float-left">
+			<!-- 广告位：PC-博客内页底通 文字链位置 -->
+			<script>
+			(function() {
+				var s = "_" + Math.random().toString(36).slice(2);
+				document.write('<div id="baidufooter_0001"></div>');
+				(window.slotbydup=window.slotbydup || []).push({
+					id: '5851901',
+					container: 'baidufooter_0001',
+					size: '520,40',
+					display: 'inlay-fix'
+				});
+			})();
+			</script>
+			<script src="https://dup.baidustatic.com/js/os.js"></script>
+			<style>
+				#baidufooter_0001{
+					display: none !important;
+				}
+			</style>
+		</span>
+		<div class="pulllog-btn float-right clearfix">
+            <button class="pulllog-login float-left csdn-tracking-statistics tracking-click" data-mod="popu_557">
+                登录
+            </button>
+            <div class="pulllog-sigin float-left csdn-tracking-statistics tracking-click" data-mod="popu_558">
+                <a href="https://passport.csdn.net/account/mobileregister" target="_blank">注册</a>
+            </div>
+            <button class="btn-close">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#csdnc-times"></use>
+                </svg>
+            </button>
+		</div>
+	</div>
+</div>
+<div id="loginWrap" style="display:none"></div>
+<div class="tool-box">
+	<ul class="meau-list">
+		<li>
+			<button class="btn-like " title="点赞">
+				<svg class="icon active" aria-hidden="true">
+					<use xlink:href="#csdnc-thumbsup-ok"></use>
+				</svg><svg class="icon no-active" aria-hidden="true">
+					<use xlink:href="#csdnc-thumbsup"></use>
+				</svg>
+				<p>0</p>
+			</button>
+		</li>
+		<li>
+			<a class="btn-comments" title="写评论" href="#commentBox">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-comments"></use>
+				</svg><br>写评论			</a>
+		</li>
+		<li class="toc-container-box" id="liTocBox">
+			<button class="btn-toc" title="目录">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-contents"></use>
+				</svg><br>目录
+			</button>
+			<div class="toc-container">
+				<div class="pos-box">
+					<div class="icon-arrow"></div>
+					<div class="scroll-box">
+						<div class="toc-box"></div>
+					</div>
+				</div>
+				<div class="opt-box">
+					<button class="btn-opt prev nomore" title="向上">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#csdnc-chevronup"></use>
+						</svg>
+					</button>
+					<button class="btn-opt next">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#csdnc-chevrondown"></use>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</li>
+		<li>
+			<button class="btn-bookmark" title="收藏">
+				<svg class="icon active" aria-hidden="true">
+					<use xlink:href="#csdnc-bookmark-ok"></use>
+				</svg><svg class="icon no-active" aria-hidden="true">
+					<use xlink:href="#csdnc-bookmark"></use>
+				</svg><br>收藏
+			</button>
+		</li>
+				<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_weixin" data-cmd="weixin" title="微信分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-wechat"></use>
+				</svg><br>微信
+			</a>
+		</li>
+		<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_tsina" data-cmd="tsina" title="微博分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-weibo"></use>
+				</svg><br>微博
+			</a>
+		</li>
+		<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_qzone" data-cmd="qzone" title="QQ分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-qq"></use>
+				</svg><br>QQ
+			</a>
+		</li>
+	</ul>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'https://csdnimg.cn/static/api/js/share.js?v=89860594'];</script>
+<script>
+    var recommendCount = 10;
+    recommendCount = recommendCount > 1 ? (recommendCount + (recommendCount>6 ? 2 : 1)) : recommendCount;
+    var articleTit = "数据库的基本用法";
+    var ChannelId = 6;
+    var articleId = "81046437";
+    var commentscount = 0;
+    var islock = false;
+    var curentUrl = "https://blog.csdn.net/qq_36594966/article/details/81046437";
+    var myUrl = "https://my.csdn.net/";
+    //1禁止评论，2正常
+    var commentAuth = 2;
+    //百度搜索
+    var baiduKey = "";
+    var needInsertBaidu = true;
+    // 代码段样式
+    var codeStyle = 'atom-one-dark';
+    var highlight = ["\u6570\u636e\u5e93","\u57fa\u672c","\u7528\u6cd5"];//高亮数组
+</script>
+<script src="https://csdnimg.cn/public/sandalstrap/1.3/js/sandalstrap.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/vendor/pagination/paging.js"></script>
+<script src='https://csdnimg.cn/public/common/gotop/js/goTop-v1.0.min.js?v201803151422'></script>
+<script>
+    GoTop({
+        right: 8,
+        hasReport: true,
+        reportFun: function() {
+            showReport(false,"数据库的基本用法");
+        }
+    })
+</script>
+<script src="https://csdnimg.cn/release/phoenix/template/js/common-da13470b4c.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/template/js/detail-e0d3bbff39.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/themes/skin-yellow/skin-yellow-22f3069ef3.min.js"></script>
+</body>
+<div class="box-box-default">
+    <a class="btn-remove">
+        关闭
+    </a>
+    <script type="text/javascript" src="//cee1.iteye.com/mhzzjepzz.js"></script>
+</div>
+<div class="box-box-large">
+    <a class="btn-remove">
+        关闭
+    </a>
+    <script type="text/javascript" src="//cee1.iteye.com/idvveasfs.js"></script>
+</div>
+<!-- 第四范式SDK -->
+<script src="https://nbrecsys.4paradigm.com/resource/js/sdk-csdn-smallflow.prod.0711.js" async defer></script>
+
+<!-- 高亮未与 markdown兼容  -->
+	<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.1.10/ckeditor/plugins/chart/chart.css" />
+	<script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.1.10/ckeditor/plugins/chart/lib/chart.min.js"></script>
+	<script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.1.10/ckeditor/plugins/chart/widget2chart.js"></script>
+	<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.1.10/ckeditor/plugins/codesnippet/lib/highlight/styles/atom-one-dark.css">
+	<script type="text/javascript" src="https://csdnimg.cn/release/phoenix/production/pc_wap_common-93244aa03c.js" /></script>
+
+	<script type="text/javascript">
+	$(function(){
+		var allEscRegex = /&(lt|gt|amp|quot|nbsp|shy|#\d{1,5});/g,
+		    namedEntities = {
+					lt: '<',
+					gt: '>',
+					amp: '&',
+					quot: '"',
+					nbsp: '\u00a0',
+					shy: '\u00ad'
+				}
+		var allEscDecode = function( match, code ) {
+				return namedEntities[ code ];
+		};
+		htmlDecodeAttr = function( text ) {
+				return text.replace( allEscRegex, allEscDecode );
+		}
+	  hljs.initHighlightingOnLoad();
+	  hljs.initCopyButtonOnLoad();
+	  hljs.initLineNumbersOnLoad();
+		if($('pre .language-plain').length>0){
+			$('pre .language-plain').each(function(i,e){
+				var highlightRe = hljs.highlightAuto(htmlDecodeAttr(e.innerHTML))
+				e.innerHTML = highlightRe.value;
+				e.className = 'language-'+highlightRe.language;
+			});
+		}
+	})
+	</script>
+</html>

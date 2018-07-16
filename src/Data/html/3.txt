@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="https://blog.csdn.net/xiaochendefendoushi/article/details/81051768"/> 
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="referrer" content="always">
+    <meta name="description" content="Python使用Redis数据库Redis 简介Redis是开源的高性能Key-Value数据库,可以用于缓存等用途.Redis可以提供事务和持久化支持保证并发安全性,并提供TTL(time to life)服务.使用RedisUbuntu系统可以用包管理器安装Redis服务:sudo apt-get install redis-server并安装客户端:sudo apt-get install ..." />
+    <meta name="keywords" content="redis" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+    <meta name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848">
+    <script src="https://csdnimg.cn/release/phoenix/vendor/tingyun/tingyun-rum-blog.js"></script>
+
+    <link href="https://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">
+    <title>Python使用Redis数据库 - CSDN博客</title>
+    
+            <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/detail-57e3201eaa.min.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/themes/skin-blackboard/skin-blackboard-916eb1673a.min.css">
+
+    <script type="text/javascript">
+        var username = "xiaochendefendoushi";
+        var blog_address = "https://blog.csdn.net/xiaochendefendoushi";
+        var static_host = "https://csdnimg.cn/release/phoenix/";
+        var currentUserName = ""; 
+        var isShowAds = true;
+        var isOwner = false;
+        var loginUrl = "https://passport.csdn.net/account/login?from=https://blog.csdn.net/xiaochendefendoushi/article/details/81051768"
+        var blogUrl = "https://blog.csdn.net/";
+        //页面皮肤样式
+        var curSkin = "skin-blackboard";
+    </script>
+    <script type="text/javascript">
+        // Traffic Stats of the entire Web site By baidu
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6bcd52f51e9b3dce32bec4a3997715ac";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+        // Traffic Stats of the entire Web site By baidu end
+    </script>
+    <script src="https://csdnimg.cn/public/common/libs/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="https://csdnimg.cn/rabbit/exposure-click/main-1.0.6.js"></script>
+    <!-- 新版上报 -->
+    <script src="//g.csdnimg.cn/track/1.0.1/track.js" type="text/javascript"></script>
+    <!-- 新版上报end -->
+            <link rel="stylesheet" href="https://csdnimg.cn/public/sandalstrap/1.3/css/sandalstrap.min.css"> 
+    <style>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </style>
+</head>
+<body>    
+    <link rel="stylesheet" href="https://csdnimg.cn/public/common/toolbar/content_toolbar_css/content_toolbar.css">
+    <script id="toolbar-tpl-scriptId" src="https://csdnimg.cn/public/common/toolbar/js/content_toolbar.js" type="text/javascript" domain="https://blog.csdn.net/"></script>
+    <script src="https://csdnimg.cn/public/sandalstrap/1.3/fonts/csdnc/csdnc.js"></script><link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/blog_code-c3a0c33d5c.css">
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/vendor/pagination/paging.css">
+<script type="text/javascript" src="//static.mediav.com/js/mvf_news_feed.js"></script>
+<div style="display:none;">
+	<img src="" onerror='setTimeout(function(){if(!/(csdn.net|iteye.com|baiducontent.com|googleusercontent.com|360webcache.com|sogoucdn.com|bingj.com|baidu.com)$/.test(window.location.hostname)){window.location.href="\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x77\x77\x2e\x63\x73\x64\x6e\x2e\x6e\x65\x74"}},3000);'>
+</div>
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/chart-3456820cac.css" />
+
+
+<header>
+	<div class="container d-flex clearfix">
+		<div class="title-box">
+			<h2 class="title-blog">
+				<a href="https://blog.csdn.net/xiaochendefendoushi">灰寨小学的python---小陈</a>
+			</h2>
+			<p class="description">人生苦短 我用python</p>
+		</div>
+		<div class="opt-box d-flex justify-content-end">
+			<a class="btn btn-sm" href="https://blog.csdn.net/xiaochendefendoushi/rss/list">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#csdnc-rss"></use>
+					</svg>RSS订阅</a>
+					</div>
+	</div>
+</header><script src="https://dup.baidustatic.com/js/ds.js"></script>
+<div class="container clearfix pt0" id="mainBox">
+    <main>
+        <div class="blog-content-box">
+	<div class="article-title-box">
+			<span class="article-type type-1 float-left">原</span>		<h1 class="title-article">Python使用Redis数据库</h1>
+	</div>
+	<div class="article-info-box">
+		<div class="article-bar-top d-flex">
+												<span class="time">2018年07月15日 12:08:41</span>
+			<div class="float-right">
+				<span class="read-count">阅读数：64</span>
+											</div>
+		</div>
+	</div>
+	<article>
+		<div id="article_content" class="article_content clearfix csdn-tracking-statistics" data-pid="blog"  data-mod=popu_307  data-dsm = "post" >
+                    <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-e2445db1a8.css" />
+						<div class="htmledit_views">
+                <h1 class="postTitle" style="font-weight:400;border-bottom:2px solid rgb(234,236,239);line-height:1.8;color:rgb(51,51,51);font-family:Verdana, Arial, Helvetica, sans-serif;background-color:rgb(255,255,255);"><a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/Finley/p/5447175.html" rel="nofollow" style="color:rgb(51,51,51);">Python使用Redis数据库</a></h1><div class="clear" style="clear:both;color:rgb(125,139,141);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:14px;background-color:rgb(255,255,255);"></div><div class="postBody" style="color:rgb(125,139,141);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:14px;background-color:rgb(255,255,255);"><div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown" style="color:rgb(51,51,51);line-height:1.8;"><h1 id="redis-简介" style="border-bottom:2px solid rgb(234,236,239);line-height:1.5;">Redis 简介</h1><p>Redis是开源的高性能Key-Value数据库,可以用于缓存等用途.</p><p>Redis可以提供事务和持久化支持保证并发安全性,并提供TTL(time to life)服务.</p><h2 id="使用redis" style="font-size:21px;line-height:1.5;">使用Redis</h2><p>Ubuntu系统可以用包管理器安装Redis服务:</p><p><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">sudo apt-get install redis-server</code></p><p>并安装客户端:</p><p><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">sudo apt-get install redis-tools</code></p><p>进入Redis客户端</p><p><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">redis-cli</code></p><p>登录远程Redis服务</p><p><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">redis-cli -h host -p port -a password</code></p><h2 id="redis基本操作指令" style="font-size:21px;line-height:1.5;">Redis基本操作指令</h2><p>Redis的Key-Value均为大小写敏感的,但是Redis指令对大小写不敏感.</p><p>Redis使用字符串作为Key,常用操作命令有:</p><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">SET key val</code></li></ul><p>设置键值对,无则新建有则更新</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">set</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">user</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">name</span>
+<span class="hljs-selector-tag" style="color:rgb(0,0,255);">OK</span></code></pre><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">DEL key</code></li></ul><p>删除键值对, 返回删除的条数</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">del</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">user</span>
+(<span class="hljs-selector-tag" style="color:rgb(0,0,255);">integer</span>) 1</code></pre><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">GET key</code></li></ul><p>返回Value</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">get</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">user</span>
+"<span class="hljs-selector-tag" style="color:rgb(0,0,255);">name</span>"</code></pre><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">EXISTS key</code></li></ul><p>检查指定键值对是否存在</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">exists</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">user</span>
+(<span class="hljs-selector-tag" style="color:rgb(0,0,255);">integer</span>) 1</code></pre><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">KEYS pattern</code></li></ul><p>使用通配符筛选显示所有符合条件的键</p><pre><code class="hljs ruby" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);"><span class="hljs-meta" style="color:rgb(43,145,175);">127.0.0.1:6379&gt;</span> keys *
+<span class="hljs-number">1</span>) <span class="hljs-string" style="color:rgb(163,21,21);">"playing_yichya"</span>
+<span class="hljs-number">2</span>) <span class="hljs-string" style="color:rgb(163,21,21);">"playing_yy"</span>
+<span class="hljs-number">3</span>) <span class="hljs-string" style="color:rgb(163,21,21);">"online_yichya"</span>
+<span class="hljs-number">4</span>) <span class="hljs-string" style="color:rgb(163,21,21);">"user"</span>
+<span class="hljs-number">5</span>) <span class="hljs-string" style="color:rgb(163,21,21);">"online_yy"</span>
+<span class="hljs-meta" style="color:rgb(43,145,175);">127.0.0.1:6379&gt;</span> keys *<span class="hljs-number">_</span>*
+<span class="hljs-number">1</span>) <span class="hljs-string" style="color:rgb(163,21,21);">"playing_yichya"</span>
+<span class="hljs-number">2</span>) <span class="hljs-string" style="color:rgb(163,21,21);">"playing_yy"</span>
+<span class="hljs-number">3</span>) <span class="hljs-string" style="color:rgb(163,21,21);">"online_yichya"</span>
+<span class="hljs-number">4</span>) <span class="hljs-string" style="color:rgb(163,21,21);">"online_yy"</span></code></pre><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">RANDOMKEY</code></li></ul><p>随机返回一个键</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">randomkey</span>
+"<span class="hljs-selector-tag" style="color:rgb(0,0,255);">hm1</span>"</code></pre><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">RENAME key newname</code></li></ul><p>重命名键</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">set</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">user2</span> 234
+<span class="hljs-selector-tag" style="color:rgb(0,0,255);">OK</span>
+127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">set</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">user</span> 233
+<span class="hljs-selector-tag" style="color:rgb(0,0,255);">OK</span>
+127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">rename</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">user</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">user2</span>
+<span class="hljs-selector-tag" style="color:rgb(0,0,255);">OK</span>
+127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">get</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">user</span>
+(<span class="hljs-selector-tag" style="color:rgb(0,0,255);">nil</span>)</code></pre><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">RENAMEX key newname</code></li></ul><p>重命名键, 不允许新名与已有的键名重复</p><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">QUIT</code></li></ul><p>退出redis客户端</p><h2 id="redis-ttl服务命令" style="font-size:21px;line-height:1.5;">Redis TTL服务命令</h2><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">EXPIRE key seconds</code></li></ul><p>以秒为单位,指定键值对的生存周期</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">expire</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">user</span> 10000
+(<span class="hljs-selector-tag" style="color:rgb(0,0,255);">integer</span>) 1</code></pre><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">PEXIRE key mseconds</code></li></ul><p>以毫秒为单位,指定键值对的生存周期</p><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">TTL key</code></li></ul><p>以秒为单位,返回键值对的剩余生存周期</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">ttl</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">user</span>
+(<span class="hljs-selector-tag" style="color:rgb(0,0,255);">integer</span>) 9996</code></pre><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">PTTL key</code></li></ul><p>以毫秒为单位,返回键值对的剩余生存周期</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">pttl</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">user</span>
+(<span class="hljs-selector-tag" style="color:rgb(0,0,255);">integer</span>) 9991684</code></pre><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">PERSIST key</code></li></ul><p>将键值对的生存周期设为永久</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">persist</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">user</span>
+(<span class="hljs-selector-tag" style="color:rgb(0,0,255);">integer</span>) 1</code></pre><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">EXPIREAT key timestamp</code></li></ul><p>使用Unix时间戳指定过期时间</p><h2 id="redis哈希命令" style="font-size:21px;line-height:1.5;">Redis哈希命令</h2><p>Redis哈希命令以Hash表作为数据结构, Hash表中所有键值对共享同样的TTL,并有着比通常键值对更快的操作速度.</p><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">HSET table key val</code></li></ul><p>示例:</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">hset</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">hml</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">yichya</span> 233
+(<span class="hljs-selector-tag" style="color:rgb(0,0,255);">integer</span>) 1</code></pre><p>执行keys和hkeys命令,可以看出hash表的数据结构</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">keys</span> *
+1) "<span class="hljs-selector-tag" style="color:rgb(0,0,255);">hml</span>"
+2) "<span class="hljs-selector-tag" style="color:rgb(0,0,255);">user</span>"
+127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">hkeys</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">hml</span>
+1) "<span class="hljs-selector-tag" style="color:rgb(0,0,255);">yichya</span>"</code></pre><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">HDEL table key</code></li></ul><p>删除键</p><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">HGET table key</code></li></ul><p>得到键值对</p><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">HKEYS tabel</code></li></ul><p>得到哈希表上所有键</p><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">HGETALL table</code></li></ul><p>返回所有key和value</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">hgetall</span> <span class="hljs-selector-tag" style="color:rgb(0,0,255);">hml</span>
+1) "<span class="hljs-selector-tag" style="color:rgb(0,0,255);">yichya</span>"
+2) "233"</code></pre><h2 id="redis事务支持" style="font-size:21px;line-height:1.5;">Redis事务支持</h2><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">MULTI</code></li></ul><p>开启事务块</p><pre><code class="hljs css" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);">127<span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.0</span><span class="hljs-selector-class">.1</span><span class="hljs-selector-pseudo" style="color:rgb(43,145,175);">:6379</span>&gt; <span class="hljs-selector-tag" style="color:rgb(0,0,255);">multi</span>
+<span class="hljs-selector-tag" style="color:rgb(0,0,255);">OK</span></code></pre><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">EXEC</code></li></ul><p>提交事务执行</p><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">DISCARD</code></li></ul><p>放弃事务</p><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">WATCH key [key ...]</code></li></ul><p>WATCH命令在事务执行之前监控Keys.</p><p>若在WATCH之后有任何Key的值发生了变化，EXEC命令执行的事务都将被放弃，同时返回Null multi-bulk</p><ul style="margin-left:40px;list-style:none;"><li style="margin-left:0px;"><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">UNWATCH</code></li></ul><p>放弃所有WATCH</p><h1 id="python使用redis数据库" style="border-bottom:2px solid rgb(234,236,239);line-height:1.5;">Python使用Redis数据库</h1><p>redis-py是常用的python-redis连接器,使用python包管理器安装此模块:</p><p><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">pip install redis</code></p><p>在Python环境下导入redis模块</p><p><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">&gt;&gt;&gt; from redis import Redis</code><br /><code style="font-size:12.6px;line-height:1.8;vertical-align:middle;font-family:'Courier New', sans-serif;background-color:rgb(245,245,245);border:1px solid rgb(204,204,204);">&gt;&gt;&gt; r = Redis()</code></p><p>Redis是封装了Redis数据库操作的类,并提供了类似的API.</p><h2 id="使用json存储" style="font-size:21px;line-height:1.5;">使用JSON存储</h2><p>除Redis-Hash表之外,redis-py将键值都作为字符串处理</p><pre><code class="hljs ruby" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);"><span class="hljs-meta" style="color:rgb(43,145,175);">&gt;&gt;</span>&gt; r.set(<span class="hljs-string" style="color:rgb(163,21,21);">'user'</span>, <span class="hljs-number">233</span>)
+True
+<span class="hljs-meta" style="color:rgb(43,145,175);">&gt;&gt;</span>&gt; r.get(<span class="hljs-string" style="color:rgb(163,21,21);">'user'</span>)
+<span class="hljs-string" style="color:rgb(163,21,21);">'233'</span></code></pre><p>对于复杂数据类型,处理返回的字符串非常不便:</p><pre><code class="hljs ruby" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);"><span class="hljs-meta" style="color:rgb(43,145,175);">&gt;&gt;</span>&gt; r.set(<span class="hljs-string" style="color:rgb(163,21,21);">'user'</span>, [<span class="hljs-number">1</span>,[{<span class="hljs-string" style="color:rgb(163,21,21);">'name'</span><span class="hljs-symbol" style="color:rgb(0,176,232);">:<span class="hljs-string" style="color:rgb(163,21,21);">'yichya'</span></span>}]])
+True
+<span class="hljs-meta" style="color:rgb(43,145,175);">&gt;&gt;</span>&gt; r.get(<span class="hljs-string" style="color:rgb(163,21,21);">'user'</span>)
+<span class="hljs-string" style="color:rgb(163,21,21);">"[1, [{'name': 'yichya'}]]"</span>
+<span class="hljs-meta" style="color:rgb(43,145,175);">&gt;&gt;</span>&gt; result = r.get(<span class="hljs-string" style="color:rgb(163,21,21);">'user'</span>)
+<span class="hljs-meta" style="color:rgb(43,145,175);">&gt;&gt;</span>&gt; list(result)
+[<span class="hljs-string" style="color:rgb(163,21,21);">'['</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'1'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">','</span>, <span class="hljs-string" style="color:rgb(163,21,21);">' '</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'['</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'{'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">"'"</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'n'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'a'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'m'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'e'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">"'"</span>, <span class="hljs-string" style="color:rgb(163,21,21);">':'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">' '</span>, <span class="hljs-string" style="color:rgb(163,21,21);">"'"</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'y'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'i'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'c'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'h'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'y'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'a'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">"'"</span>, <span class="hljs-string" style="color:rgb(163,21,21);">'}'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">']'</span>, <span class="hljs-string" style="color:rgb(163,21,21);">']'</span>]</code></pre><p>可以选择使用JSON作为存储类型,并以python内置json模块进行编码和解码.</p><p>另外,一个redis实例只维护一个数据表而应用中经常出现需要维护多个字典的情况.</p><p>草民建议使用prefix+key作为redis的键来模拟多个数据表.</p><p>草民写了一个简单的Redis-dict适配器,允许以类似字典的方式操作Redis数据库:</p><pre><code class="hljs python" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);"><span class="hljs-keyword" style="color:rgb(0,0,255);">from</span> redis <span class="hljs-keyword" style="color:rgb(0,0,255);">import</span> Redis
+
+<span class="hljs-keyword" style="color:rgb(0,0,255);">import</span> json
+
+<span class="hljs-class"><span class="hljs-keyword" style="color:rgb(0,0,255);">class</span> <span class="hljs-title" style="color:rgb(163,21,21);">RedisDict</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword" style="color:rgb(0,0,255);">def</span> <span class="hljs-title" style="color:rgb(163,21,21);">__init__</span><span class="hljs-params">(self, prefix=<span class="hljs-string" style="color:rgb(163,21,21);">''</span>)</span>:</span>
+        self.data = Redis()
+        self.prefix = prefix
+
+    <span class="hljs-function"><span class="hljs-keyword" style="color:rgb(0,0,255);">def</span> <span class="hljs-title" style="color:rgb(163,21,21);">get</span><span class="hljs-params">(self, key)</span>:</span>
+        redis_key = self.prefix + <span class="hljs-string" style="color:rgb(163,21,21);">'_'</span> + key
+        redis_val = self.data.get(redis_key)
+        <span class="hljs-keyword" style="color:rgb(0,0,255);">if</span> redis_val <span class="hljs-keyword" style="color:rgb(0,0,255);">is</span> <span class="hljs-keyword" style="color:rgb(0,0,255);">None</span>:
+            <span class="hljs-keyword" style="color:rgb(0,0,255);">return</span> <span class="hljs-keyword" style="color:rgb(0,0,255);">None</span>
+        <span class="hljs-keyword" style="color:rgb(0,0,255);">else</span>:
+            <span class="hljs-keyword" style="color:rgb(0,0,255);">return</span> json.loads(redis_val)
+
+    <span class="hljs-function"><span class="hljs-keyword" style="color:rgb(0,0,255);">def</span> <span class="hljs-title" style="color:rgb(163,21,21);">set</span><span class="hljs-params">(self, key, val)</span>:</span>
+        redis_key = self.prefix + <span class="hljs-string" style="color:rgb(163,21,21);">'_'</span> + key
+        redis_val = json.dumps(val)
+        self.data.set(redis_key, redis_val)
+
+    <span class="hljs-function"><span class="hljs-keyword" style="color:rgb(0,0,255);">def</span> <span class="hljs-title" style="color:rgb(163,21,21);">pop</span><span class="hljs-params">(self, key)</span>:</span>
+        redis_key = self.prefix + <span class="hljs-string" style="color:rgb(163,21,21);">'_'</span> + key
+        self.data.delete(redis_key)
+
+    <span class="hljs-function"><span class="hljs-keyword" style="color:rgb(0,0,255);">def</span> <span class="hljs-title" style="color:rgb(163,21,21);">__iter__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword" style="color:rgb(0,0,255);">for</span> item <span class="hljs-keyword" style="color:rgb(0,0,255);">in</span> self.data.keys(self.prefix + <span class="hljs-string" style="color:rgb(163,21,21);">'*'</span>):
+            prefix, key = decode(item)
+            <span class="hljs-keyword" style="color:rgb(0,0,255);">yield</span> key
+
+
+<span class="hljs-function"><span class="hljs-keyword" style="color:rgb(0,0,255);">def</span> <span class="hljs-title" style="color:rgb(163,21,21);">decode</span><span class="hljs-params">(redis_key)</span>:</span>
+    sep = redis_key.find(<span class="hljs-string" style="color:rgb(163,21,21);">'_'</span>)
+    prefix = redis_key[:sep]
+    key = redis_key[sep+<span class="hljs-number">1</span>:]
+    <span class="hljs-keyword" style="color:rgb(0,0,255);">return</span> prefix, key
+
+<span class="hljs-keyword" style="color:rgb(0,0,255);">if</span> __name__ == <span class="hljs-string" style="color:rgb(163,21,21);">'__main__'</span>:
+    r = RedisCache(<span class="hljs-string" style="color:rgb(163,21,21);">'online'</span>)
+    r.set(<span class="hljs-string" style="color:rgb(163,21,21);">'user'</span>, [<span class="hljs-number">1</span>,[{<span class="hljs-string" style="color:rgb(163,21,21);">'name'</span>:<span class="hljs-string" style="color:rgb(163,21,21);">'yichya'</span>}]])
+    <span class="hljs-keyword" style="color:rgb(0,0,255);">for</span> item <span class="hljs-keyword" style="color:rgb(0,0,255);">in</span> r:
+        print(item)
+        print(r.get(item))</code></pre><h2 id="hash表操作" style="font-size:21px;line-height:1.5;">hash表操作</h2><p>redis-py的hash操作与redis命令类似:</p><pre><code class="hljs python" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);"><span class="hljs-keyword" style="color:rgb(0,0,255);">from</span> redis <span class="hljs-keyword" style="color:rgb(0,0,255);">import</span> Redis
+<span class="hljs-keyword" style="color:rgb(0,0,255);">import</span> json
+
+<span class="hljs-class"><span class="hljs-keyword" style="color:rgb(0,0,255);">class</span> <span class="hljs-title" style="color:rgb(163,21,21);">RedisDict</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword" style="color:rgb(0,0,255);">def</span> <span class="hljs-title" style="color:rgb(163,21,21);">__init__</span><span class="hljs-params">(self, table)</span>:</span>
+        self.session = Redis()
+        self.table = table
+        self.session.delete(table)
+
+    <span class="hljs-function"><span class="hljs-keyword" style="color:rgb(0,0,255);">def</span> <span class="hljs-title" style="color:rgb(163,21,21);">get</span><span class="hljs-params">(self, key)</span>:</span>
+        redis_val = self.session.hget(self.table, key)
+        <span class="hljs-keyword" style="color:rgb(0,0,255);">if</span> redis_val <span class="hljs-keyword" style="color:rgb(0,0,255);">is</span> <span class="hljs-keyword" style="color:rgb(0,0,255);">None</span>:
+            <span class="hljs-keyword" style="color:rgb(0,0,255);">return</span> <span class="hljs-keyword" style="color:rgb(0,0,255);">None</span>
+        <span class="hljs-keyword" style="color:rgb(0,0,255);">else</span>:
+            <span class="hljs-keyword" style="color:rgb(0,0,255);">return</span> json.loads(redis_val)
+
+    <span class="hljs-function"><span class="hljs-keyword" style="color:rgb(0,0,255);">def</span> <span class="hljs-title" style="color:rgb(163,21,21);">set</span><span class="hljs-params">(self, key, val)</span>:</span>
+        redis_val = json.dumps(val)
+        self.session.hset(self.table, key, redis_val)
+
+    <span class="hljs-function"><span class="hljs-keyword" style="color:rgb(0,0,255);">def</span> <span class="hljs-title" style="color:rgb(163,21,21);">pop</span><span class="hljs-params">(self, key)</span>:</span>
+        self.session.hdel(self.table, key)
+
+    <span class="hljs-function"><span class="hljs-keyword" style="color:rgb(0,0,255);">def</span> <span class="hljs-title" style="color:rgb(163,21,21);">__iter__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword" style="color:rgb(0,0,255);">for</span> key <span class="hljs-keyword" style="color:rgb(0,0,255);">in</span> self.session.hkeys(self.table):
+            <span class="hljs-keyword" style="color:rgb(0,0,255);">yield</span> key</code></pre><p>用hash表模拟dict,这个实现比用前缀区分高效得多.</p><h2 id="pipeline操作" style="font-size:21px;line-height:1.5;">pipeline操作</h2><p>Redis-Server是一个TCP服务器,使用pipline维护消息队列可以提高批量处理的效率.</p><pre><code class="hljs ruby" style="vertical-align:middle;background-color:rgb(255,255,255);font-size:12px;line-height:1.5;font-family:'Courier New', sans-serif;border:1px solid rgb(204,204,204);"><span class="hljs-meta" style="color:rgb(43,145,175);">&gt;&gt;</span>&gt; p = r.pipeline()
+<span class="hljs-meta" style="color:rgb(43,145,175);">&gt;&gt;</span>&gt; p.set(<span class="hljs-string" style="color:rgb(163,21,21);">'yichya'</span>, <span class="hljs-number">2333</span>)
+Pipeline&lt;ConnectionPool&lt;Connection&lt;host=localhost,port=<span class="hljs-number">6379</span>,db=<span class="hljs-number">0</span><span class="hljs-meta" style="color:rgb(43,145,175);">&gt;&gt;&gt;
+</span>&gt;&gt;&gt; p.get(<span class="hljs-string" style="color:rgb(163,21,21);">'yichya'</span>)
+Pipeline&lt;ConnectionPool&lt;Connection&lt;host=localhost,port=<span class="hljs-number">6379</span>,db=<span class="hljs-number">0</span><span class="hljs-meta" style="color:rgb(43,145,175);">&gt;&gt;&gt;
+</span>&gt;&gt;&gt; p.execute()
+[True, <span class="hljs-string" style="color:rgb(163,21,21);">'2333'</span>]</code></pre></div></div>            </div>
+                </div>
+				<div class="hide-article-box text-center">
+			<a class="btn btn-red-hollow" id="btn-readmore" data-track-view='{"mod":"popu_376","con":",https://blog.csdn.net/xiaochendefendoushi/article/details/81051768,"}' data-track-click='{"mod":"popu_376","con":",https://blog.csdn.net/xiaochendefendoushi/article/details/81051768,"}'>阅读更多</a>
+		</div>
+        	</article>
+	
+		<div class="article-bar-bottom">
+						<div class="tags-box artic-tag-box">
+			<span class="label">文章标签：</span>
+						<a class="tag-link" href="http://so.csdn.net/so/search/s.do?q=redis&t=blog" target="_blank">redis						</a>
+		</div>
+										<div class="tags-box hot-word">
+			<span class="label">相关热词：</span>
+						<a class="tag-link" href="https://blog.csdn.net/wzx1286474341/article/details/80465794" target="_blank">
+			和python			</a>
+						<a class="tag-link" href="https://blog.csdn.net/data8866/article/details/62884210" target="_blank">
+			python和			</a>
+						<a class="tag-link" href="https://blog.csdn.net/ieearth/article/details/72910204" target="_blank">
+			python【】			</a>
+						<a class="tag-link" href="https://blog.csdn.net/yhs_cy/article/details/79438706" target="_blank">
+			python下			</a>
+						<a class="tag-link" href="https://blog.csdn.net/data8866/article/details/62884210" target="_blank">
+			python的与			</a>
+					</div>
+			</div>
+	
+	<!-- !empty($pre_next_article[0]) -->
+			<div class="related-article related-article-prev text-truncate">
+		<a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81051755">
+			<span>上一篇</span>超详细Redis数据库入门教程		</a>
+	</div>
+				<div class="related-article related-article-next text-truncate">
+		<a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81054511">
+			<span>下一篇</span>Django Web 开发小项目-----用Python+Django在Eclipse环境下开发web网站		</a>
+	</div>
+	</div>
+<script>
+    $(".MathJax").remove();
+</script>
+
+<script type="text/javascript" src="https://static-blog.csdn.net/mdeditor/public/res/bower-libs/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+			"HTML-CSS": {
+					linebreaks: { automatic: true, width: "94%container" },
+					imageFont: null
+			},
+			tex2jax: {
+				preview: "none"
+			},
+			mml2jax: {
+				preview: 'none'
+			}
+	});
+</script>
+<script>
+	(function(){
+		var btnReadmore = $("#btn-readmore");
+		if(btnReadmore.length>0){
+			var winH = $(window).height();
+			var articleBox = $("div.article_content");
+			var artH = articleBox.height();
+			if(artH > winH*2){
+				articleBox.css({
+					'height':winH*2+'px',
+					'overflow':'hidden'
+				})
+				btnReadmore.click(function(){
+					articleBox.removeAttr("style");
+					$(this).parent().remove();
+				})
+			}else{
+				btnReadmore.parent().remove();
+			}
+		}
+	})()
+</script>        <div data-track-view='{"mod":"popu_625","con": ",https://blog.csdn.net/xiaochendefendoushi/article/details/81051768,from_360"}' style="margin-top: 8px;padding: 20px;background-color: #fff;overflow: hidden;" id="adt0"></div>
+            <script>
+                var adWidth = $("div.blog-content-box").outerWidth() - 40;
+                NEWS_FEED({
+                    w: adWidth,
+                    h : 130,
+                    showid : "s02a31",
+                    placeholderId: "adt0",
+                    inject : "define",
+                    define : {
+                    imagePosition : "left",
+                    imageBorderRadius : 0,
+                    imageWidth: 231,
+                    imageHeight: 130,
+                    imageFill : "clip",
+                    displayImage : true,
+                    displayTitle : true,
+                    titleFontSize: 20,
+                    titleFontColor: "#333",
+                    titleFontFamily : "Microsoft Yahei",
+                    titleFontWeight: "bold",
+                    titlePaddingTop : 0,
+                    titlePaddingRight : 0,
+                    titlePaddingBottom : 10,
+                    titlePaddingLeft : 16,
+                    displayDesc : true,
+                    descFontSize: 14,
+                    descFontColor: "#6b6b6b",
+                    descFontFamily : "Microsoft Yahei",
+                    paddingTop : 0,
+                    paddingRight : 0,
+                    paddingBottom : 0,
+                    paddingLeft : 0,
+                    backgroundColor: "#fff",
+                    hoverColor: "#ca0c16"
+                    }
+                })
+            </script>        <a id="commentBox"></a>
+<div class="comment-box">
+	  	<div class="unlogin-box text-center">
+		想对作者说点什么？
+		<!-- $curl 当前地址 -->
+		<a href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/xiaochendefendoushi/article/details/81051768#commentBox" class="btn btn-sm btn-red">我来说一句</a>
+	</div>
+			<div class="comment-list-container">
+		<a id="comments"></a>
+		<div class="comment-list-box">
+		</div>
+		<div id="commentPage" class="pagination-box d-none"></div>
+		<div class="opt-box text-center">
+			<button class="btn btn-sm btn-link-blue" id="btnMoreComment"></button>
+		</div>
+	</div>
+</div>        <div class="recommend-box">
+            		<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/cbbing/article/details/46873211,BlogCommendFromQuerySearch_0"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/cbbing/article/details/46873211,BlogCommendFromQuerySearch_0"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/cbbing/article/details/46873211" target="_blank">
+				在<em>Python</em>中<em>使用</em><em>Redis</em><em>数据库</em>			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/cbbing/article/details/46873211" target="_blank" >
+				一、Redis数据库的配置以windows系统为例，下载Redis安装包解压后，配置redis.windows.conf 文件：# The filename where to dump the DB
+...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/cbbing" title="cbbing" target="_blank">
+					<img src="https://avatar.csdn.net/C/0/1/3_cbbing.jpg" alt="cbbing" class="avatar-pic">
+					<span class="name">cbbing</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2015-07-14 09:54:46</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：2595</span>
+			</p>
+		</div>
+	</div>
+						<div class="recommend-item-box recommend-download-box clearfix" data-track-view='{"mod":"popu_614","con":",https://download.csdn.net/download/u011361138/10221690,BlogCommendFromQuerySearch_1"}' data-track-click='{"mod":"popu_614","con":",https://download.csdn.net/download/u011361138/10221690,BlogCommendFromQuerySearch_1"}'>
+			<div class="content float-left">
+				<h4 class="text-truncate">
+					<a href="https://download.csdn.net/download/u011361138/10221690" target="_blank">
+						<em>python</em>基础知识整理.chm					</a>
+				</h4>
+				<p>
+					<span class="data">2018年01月24日 </span>
+					<span class="size">197KB</span>
+					<span class="type">下载</span>
+				</p>
+			</div>
+			<div class="img-box float-right">
+				<a href="https://download.csdn.net/download/u011361138/10221690" target="_blank" strategy="BlogCommendFromQuerySearch_1">
+					<img src="https://csdnimg.cn/release/download/old_static/images/minetype/unkonw.svg" alt="">
+				</a>
+			</div>
+		</div>
+									<div class="recommend-item-box recommend-ad-box" id="ad1"></div>
+				<script>
+				var width = $("div.recommend-box").outerWidth() - 48;
+					NEWS_FEED({
+						w: width,
+						h : 90,
+						showid : 'GNKXx7',
+						placeholderId: "ad1",
+						inject : 'define',
+						define : {
+							imagePosition : 'left',
+							imageBorderRadius : 0,
+							imageWidth: 120,
+							imageHeight: 90,
+							imageFill : 'clip',
+							displayImage : true,
+							displayTitle : true,
+							titleFontSize: 20,
+							titleFontColor: '#333',
+							titleFontFamily : 'Microsoft Yahei',
+							titleFontWeight: 'bold',
+							titlePaddingTop : 0,
+							titlePaddingRight : 0,
+							titlePaddingBottom : 10,
+							titlePaddingLeft : 16,
+							displayDesc : true,
+							descFontSize: 14,
+							descPaddingLeft: 14,
+							descFontColor: '#6b6b6b',
+							descFontFamily : 'Microsoft Yahei',
+							paddingTop : 0,
+							paddingRight : 0,
+							paddingBottom : 0,
+							paddingLeft : 0,
+							backgroundColor: '#fff',
+							hoverColor: '#ca0c16'
+						}
+					})
+				</script>
+
+			
+				<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/reblue520/article/details/80553383,BlogCommendFromQuerySearch_2"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/reblue520/article/details/80553383,BlogCommendFromQuerySearch_2"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/reblue520/article/details/80553383" target="_blank">
+				<em>python</em>操作三大主流<em>数据库</em>(12)<em>python</em>操作<em>redis</em>的api框架<em>redis</em>-py简单<em>使用</em>			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/reblue520/article/details/80553383" target="_blank" >
+				
+			python操作三大主流数据库(12)python操作redis的api框架redis-py简单使用
+redispy安装安装及简单使用：https://github.com/andymcc...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/reblue520" title="reblue520" target="_blank">
+					<img src="https://avatar.csdn.net/0/4/3/3_reblue520.jpg" alt="reblue520" class="avatar-pic">
+					<span class="name">reblue520</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2018-03-12 15:03:00</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：60</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/zhengwantong/article/details/79497699,BlogCommendFromQuerySearch_3"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/zhengwantong/article/details/79497699,BlogCommendFromQuerySearch_3"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/zhengwantong/article/details/79497699" target="_blank">
+				<em>python</em>3之flask框架连接<em>redis</em><em>数据库</em>			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/zhengwantong/article/details/79497699" target="_blank" >
+				先复习下ubuntu安装redis的步骤
+
+
+
+$ wget http://download.redis.io/releases/redis-4.0.8.tar.gz
+$ tar xzf redis-...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/zhengwantong" title="zhengwantong" target="_blank">
+					<img src="https://avatar.csdn.net/3/D/1/3_zhengwantong.jpg" alt="zhengwantong" class="avatar-pic">
+					<span class="name">zhengwantong</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2018-03-09 15:18:02</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：647</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/luanpeng825485697/article/details/79363490,BlogCommendFromQuerySearch_4"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/luanpeng825485697/article/details/79363490,BlogCommendFromQuerySearch_4"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/luanpeng825485697/article/details/79363490" target="_blank">
+				<em>python</em>数据存储系列教程——<em>python</em>中<em>redis</em><em>数据库</em>操作：连接、增删查改、多级路径			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/luanpeng825485697/article/details/79363490" target="_blank" >
+				全栈工程师开发手册 （作者：陈玓玏）
+  
+   python教程全解
+
+
+调试环境python3.6，调试python操作redis数据库，首先要在本地或服务器安装redis数据库。安装参考：htt...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/luanpeng825485697" title="luanpeng825485697" target="_blank">
+					<img src="https://avatar.csdn.net/2/A/7/3_luanpeng825485697.jpg" alt="luanpeng825485697" class="avatar-pic">
+					<span class="name">luanpeng825485697</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2018-02-26 11:43:20</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：2494</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/Vivid_110/article/details/50223697,BlogCommendFromQuerySearch_5"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/Vivid_110/article/details/50223697,BlogCommendFromQuerySearch_5"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/Vivid_110/article/details/50223697" target="_blank">
+				用<em>python</em>操作<em>redis</em><em>数据库</em>			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/Vivid_110/article/details/50223697" target="_blank" >
+				前言
+       之前，			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/Vivid_110" title="Vivid_110" target="_blank">
+					<img src="https://avatar.csdn.net/3/2/8/3_vivid_110.jpg" alt="Vivid_110" class="avatar-pic">
+					<span class="name">Vivid_110</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2015-12-09 11:58:36</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：6041</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box recommend-ad-box" id="a_d_feed_0"></div>
+			<script>
+				var width = $("div.recommend-box").outerWidth() - 48;
+				NEWS_FEED({
+					w: width,
+					h: 90,
+					showid: 'Afihld',
+					placeholderId: 'a_d_feed_0',
+					inject: 'define',
+					define: {
+						imagePosition: 'left',
+						imageBorderRadius: 0,
+						imageWidth: 120,
+						imageHeight: 90,
+						imageFill: 'clip',
+						displayImage: true,
+						displayTitle: true,
+						titleFontSize: 20,
+						titleFontColor: '#333',
+						titleFontFamily: 'Microsoft Yahei',
+						titleFontWeight: 'bold',
+						titlePaddingTop: 0,
+						titlePaddingRight: 0,
+						titlePaddingBottom: 10,
+						titlePaddingLeft: 16,
+						displayDesc: true,
+						descFontSize: 14,
+						descPaddingLeft: 14,
+						descFontColor: '#6b6b6b',
+						descFontFamily: 'Microsoft Yahei',
+						paddingTop: 0,
+						paddingRight: 0,
+						paddingBottom: 0,
+						paddingLeft: 0,
+						backgroundColor: '#fff',
+						hoverColor: '#ca0c16'
+					}
+				})
+			</script>
+			<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/weixin_36135773/article/details/78800371,BlogCommendFromQuerySearch_6"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/weixin_36135773/article/details/78800371,BlogCommendFromQuerySearch_6"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/weixin_36135773/article/details/78800371" target="_blank">
+				基于<em>python</em>+mysql+<em>redis</em>缓存设计与<em>数据库</em>关联数据处理			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/weixin_36135773/article/details/78800371" target="_blank" >
+				1、添加表
+
+CREATE TABLE tb_signin(
+
+id INT,
+
+user_name VARCHAR(10),
+
+signin_num INT ,
+
+signin_time DATET...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/weixin_36135773" title="weixin_36135773" target="_blank">
+					<img src="https://avatar.csdn.net/8/2/9/3_weixin_36135773.jpg" alt="weixin_36135773" class="avatar-pic">
+					<span class="name">weixin_36135773</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2017-12-14 11:06:27</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：454</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/songzhiren5560/article/details/80311981,BlogCommendFromQuerySearch_7"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/songzhiren5560/article/details/80311981,BlogCommendFromQuerySearch_7"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/songzhiren5560/article/details/80311981" target="_blank">
+				<em>使用</em><em>python</em>来操作<em>redis</em>用法详解			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/songzhiren5560/article/details/80311981" target="_blank" >
+				1、redis连接redis提供两个类Redis和StrictRedis用于实现Redis的命令，StrictRedis用于实现大部分官方的命令，并使用官方的语法和命令，Redis是StrictRed...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/songzhiren5560" title="songzhiren5560" target="_blank">
+					<img src="https://avatar.csdn.net/2/5/5/3_songzhiren5560.jpg" alt="songzhiren5560" class="avatar-pic">
+					<span class="name">songzhiren5560</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2018-05-14 17:04:58</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：168</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/guoqianqian5812/article/details/68560689,BlogCommendFromQuerySearch_8"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/guoqianqian5812/article/details/68560689,BlogCommendFromQuerySearch_8"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/guoqianqian5812/article/details/68560689" target="_blank">
+				tornado-<em>redis</em>连接池的<em>使用</em>			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/guoqianqian5812/article/details/68560689" target="_blank" >
+				最近公司项目中用到了tornado框架，并使用redis作为缓存，为了充分发挥tornado异步效果，选择了tornado-redis作为redis客户端，可以很好的和tornado结合。介绍torn...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/guoqianqian5812" title="guoqianqian5812" target="_blank">
+					<img src="https://avatar.csdn.net/D/3/3/3_guoqianqian5812.jpg" alt="guoqianqian5812" class="avatar-pic">
+					<span class="name">guoqianqian5812</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2017-03-30 22:32:38</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：1957</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/skyannesky/article/details/78068049,BlogCommendFromQuerySearch_9"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/skyannesky/article/details/78068049,BlogCommendFromQuerySearch_9"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/skyannesky/article/details/78068049" target="_blank">
+				<em>redis</em><em>数据库</em>和<em>python</em>的交互（完整版）			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/skyannesky/article/details/78068049" target="_blank" >
+				一、引入redis模块import redis
+二、在python中获取redis数据库redis_0 = redis.StrictRedis(host=&quot;localhost&quot;, port=6379,...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/skyannesky" title="skyannesky" target="_blank">
+					<img src="https://avatar.csdn.net/B/6/D/3_skyannesky.jpg" alt="skyannesky" class="avatar-pic">
+					<span class="name">skyannesky</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2017-09-23 00:04:18</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：448</span>
+			</p>
+		</div>
+	</div>
+			
+            <div class="recommend-loading-box">
+                <img src='https://csdnimg.cn/release/phoenix/images/feedLoading.gif'>
+            </div>
+            <div class="recommend-end-box">
+                <p class="text-center">没有更多推荐了，<a href="https://blog.csdn.net/" class="c-blue c-blue-hover c-blue-focus">返回首页</a></p>
+            </div>
+        </div>
+    </main>
+    <aside>
+		    <div id="asideProfile" class="aside-box">
+    <h3 class="aside-title">个人资料</h3>
+    <div class="profile-intro d-flex">
+        <div class="avatar-box d-flex justify-content-center flex-column">
+            <a href="https://blog.csdn.net/xiaochendefendoushi">
+                <img src="https://avatar.csdn.net/F/2/C/3_xiaochendefendoushi.jpg" class="avatar_pic">
+            </a>
+        </div>
+        <div class="user-info d-flex justify-content-center flex-column">
+            <p class="name csdn-tracking-statistics tracking-click" data-mod="popu_379">
+                <a href="https://blog.csdn.net/xiaochendefendoushi" target="_blank" class="text-truncate" id="uid">xiaochendefendoushi</a>
+            </p>
+                    </div>
+                <div class="opt-box d-flex justify-content-center flex-column">
+            <span  class="csdn-tracking-statistics tracking-click" data-mod="popu_379">
+                                <a class="btn btn-sm btn-red-hollow" href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/xiaochendefendoushi/article/details/81051768" target="_self">关注</a>
+                            </span>
+                    </div>
+            </div>
+    <div class="data-info d-flex item-tiling">
+                <dl class="text-center" title="68">
+                        <dt><a href="https://blog.csdn.net/xiaochendefendoushi?t=1">原创</a></dt>
+            <dd><a href="https://blog.csdn.net/xiaochendefendoushi?t=1"><span class="count">68</span></a></dd>
+                    </dl>
+        <dl class="text-center" title="6">
+            <dt>粉丝</dt>
+            <dd><span class="count" id="fan">6</span></dd>
+        </dl>
+        <dl class="text-center" title="2">
+            <dt>喜欢</dt>
+            <dd><span class="count">2</span></dd>
+        </dl>
+        <dl class="text-center" title="1">
+            <dt>评论</dt>
+            <dd><span class="count">1</span></dd>
+        </dl>
+    </div>
+    <div class="grade-box clearfix">
+        <dl>
+            <dt>等级：</dt>
+            <dd>
+                <a href="https://blog.csdn.net/home/help.html#level" title="3级,点击查看等级说明" target="_blank">
+                    <svg class="icon icon-level" aria-hidden="true">
+                        <use xlink:href="#csdnc-bloglevel-3"></use>
+                    </svg>
+                </a>
+            </dd>
+        </dl>
+        <dl>
+            <dt>访问：</dt>
+            <dd title="3096">
+                3096            </dd>
+        </dl>
+        <dl>
+            <dt>积分：</dt>
+            <dd title="792">
+                792            </dd>
+        </dl>
+        <dl title="69431">
+            <dt>排名：</dt>
+            <dd>6万+</dd>
+        </dl>
+    </div>
+        <div class="badge-box d-flex">
+        <span>勋章：</span>
+                <a class="icon-badge" title="专栏达人">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#csdnc-m-columns"></use>
+            </svg>
+            <div class="icon-arrow"></div>
+            <div class="grade-detail-box item1">
+                <div class="pos-box">
+                    <div class="left-box d-flex justify-content-center align-items-center flex-column">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#csdnc-m-columns"></use>
+                        </svg>
+                        <p>专栏达人</p>
+                    </div>
+                    <div class="right-box d-flex justify-content-center align-items-center">
+                        授予成功创建个人博客专栏的用户。专栏中添加五篇以上博文即可点亮！撰写博客专栏浓缩技术精华，专栏达人就是你！
+                    </div>
+                </div>
+            </div> 
+        </a>  
+                        <a class="icon-badge" title="持之以恒">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#csdnc-m-lasting"></use>
+            </svg>
+            <div class="icon-arrow"></div>
+            <div class="grade-detail-box item2">
+                <div class="pos-box">
+                    <div class="left-box d-flex justify-content-center align-items-center flex-column">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#csdnc-m-lasting"></use>
+                        </svg>
+                        <p>持之以恒</p>
+                    </div>
+                    <div class="right-box d-flex justify-content-center align-items-center">
+                        授予每个自然月内发布4篇或4篇以上原创或翻译IT博文的用户。不积跬步无以至千里，不积小流无以成江海，程序人生的精彩需要坚持不懈地积累！
+                    </div>
+                </div>
+            </div>
+        </a>
+                            </div>
+    </div>		    <div class="csdn-tracking-statistics mb8 box-shadow" data-pid="blog" data-mod="popu_4" style="height:250px;">
+    <div class="aside-content text-center" id="cpro_u2734133">
+              <script type="text/javascript" src="//cee1.iteye.com/lgyyovfyh.js"></script>
+          </div>
+</div>
+		    <div id="asideNewArticle" class="aside-box">
+    <h3 class="aside-title">最新文章</h3>
+    <div class="aside-content">
+        <ul class="inf_list clearfix csdn-tracking-statistics tracking-click" data-mod="popu_382">
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81067470" target="_blank">Git 多人协作开发的过程</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81063205" target="_blank">使用Git进行多人协作开发</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81058279" target="_blank">Django-分页功能（第三方库）</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81056870" target="_blank">Django REST framework教程一：序列化</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81056348" target="_blank">Redis系列-存储篇set主要操作函数小结</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+		    <div id="asideColumn" class="aside-box">
+    <h3 class="aside-title">博主专栏</h3>
+    <div class="aside-content">
+        <ul class="column-box csdn-tracking-statistics tracking-click" data-mod="popu_520" >
+                            <li class="clearfix">
+                    <div class="img-box float-left">
+                        <a class="d-flex align-items-center" href="https://blog.csdn.net/column/details/24740.html">
+                            <img src="//img-blog.csdn.net/20180716164155988?imageView2/5/w/120/h/120" alt="">
+                        </a>
+                    </div>
+                    <div class="info">
+                        <p class="title"><a href="https://blog.csdn.net/column/details/24740.html">程序人生</a></p>
+                        <div class="data">阅读量：<span>205</span><span class="count">2 篇</span></div>
+                    </div>
+                </li>
+                            <li class="clearfix">
+                    <div class="img-box float-left">
+                        <a class="d-flex align-items-center" href="https://blog.csdn.net/column/details/24795.html">
+                            <img src="//img-blog.csdn.net/20180716164618553?imageView2/5/w/120/h/120" alt="">
+                        </a>
+                    </div>
+                    <div class="info">
+                        <p class="title"><a href="https://blog.csdn.net/column/details/24795.html">人工智能与大数据</a></p>
+                        <div class="data">阅读量：<span>5561</span><span class="count">3 篇</span></div>
+                    </div>
+                </li>
+                            <li class="clearfix">
+                    <div class="img-box float-left">
+                        <a class="d-flex align-items-center" href="https://blog.csdn.net/column/details/24887.html">
+                            <img src="//img-blog.csdn.net/20180716164935242?imageView2/5/w/120/h/120" alt="">
+                        </a>
+                    </div>
+                    <div class="info">
+                        <p class="title"><a href="https://blog.csdn.net/column/details/24887.html">python 阶段性自我总结</a></p>
+                        <div class="data">阅读量：<span>22</span><span class="count">5 篇</span></div>
+                    </div>
+                </li>
+                    </ul>
+    </div>
+    </div>
+		    		    <div id="asideArchive" class="aside-box">
+    <h3 class="aside-title">归档</h3>
+    <div class="aside-content">
+        <ul class="archive-list">
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/month/2018/07">
+                    2018年7月                    <span class="count float-right">108篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/month/2018/06">
+                    2018年6月                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/month/2018/04">
+                    2018年4月                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                    </ul>
+    </div>
+    </div>
+		    <div id="asideNewComments" class="aside-box">
+    <h3 class="aside-title">最新评论</h3>
+    <div class="aside-content">
+        <ul class="newcomment-list">
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/xiaochendefendoushi/article/details/81051655#comments">一个小时学会MySQL数据库</a>
+                <p class="comment">
+                    <a href="https://my.csdn.net/qq_40802742" class="user-name" target="_blank">qq_40802742</a>：呵呵呵                </p>
+            </li>
+                    </ul>
+    </div>
+</div>
+		<div id="asideFooter">
+			
+		<div class="aside-box">
+						<script type="text/javascript" src="//cee1.iteye.com/mhzzpwgzj.js"></script>
+					</div>
+				<div class="aside-box">
+			<div class="persion_article">
+			</div>
+		</div>
+	</div>
+</aside>
+<script src="https://csdnimg.cn/pubfooter/js/publib_footer-1.0.3.js" data-isfootertrack="false" type="text/javascript"></script>
+<script>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).remove();
+	})
+</script>
+</div>
+<div class="mask-dark"></div>
+<div class="pulllog-box" style="display: block;">
+	<div class="pulllog clearfix">
+		<span class="text float-left">
+			<!-- 广告位：PC-博客内页底通 文字链位置 -->
+			<script>
+			(function() {
+				var s = "_" + Math.random().toString(36).slice(2);
+				document.write('<div id="baidufooter_0001"></div>');
+				(window.slotbydup=window.slotbydup || []).push({
+					id: '5851901',
+					container: 'baidufooter_0001',
+					size: '520,40',
+					display: 'inlay-fix'
+				});
+			})();
+			</script>
+			<script src="https://dup.baidustatic.com/js/os.js"></script>
+			<style>
+				#baidufooter_0001{
+					display: none !important;
+				}
+			</style>
+		</span>
+		<div class="pulllog-btn float-right clearfix">
+            <button class="pulllog-login float-left csdn-tracking-statistics tracking-click" data-mod="popu_557">
+                登录
+            </button>
+            <div class="pulllog-sigin float-left csdn-tracking-statistics tracking-click" data-mod="popu_558">
+                <a href="https://passport.csdn.net/account/mobileregister" target="_blank">注册</a>
+            </div>
+            <button class="btn-close">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#csdnc-times"></use>
+                </svg>
+            </button>
+		</div>
+	</div>
+</div>
+<div id="loginWrap" style="display:none"></div>
+<div class="tool-box">
+	<ul class="meau-list">
+		<li>
+			<button class="btn-like " title="点赞">
+				<svg class="icon active" aria-hidden="true">
+					<use xlink:href="#csdnc-thumbsup-ok"></use>
+				</svg><svg class="icon no-active" aria-hidden="true">
+					<use xlink:href="#csdnc-thumbsup"></use>
+				</svg>
+				<p>0</p>
+			</button>
+		</li>
+		<li>
+			<a class="btn-comments" title="写评论" href="#commentBox">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-comments"></use>
+				</svg><br>写评论			</a>
+		</li>
+		<li class="toc-container-box" id="liTocBox">
+			<button class="btn-toc" title="目录">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-contents"></use>
+				</svg><br>目录
+			</button>
+			<div class="toc-container">
+				<div class="pos-box">
+					<div class="icon-arrow"></div>
+					<div class="scroll-box">
+						<div class="toc-box"></div>
+					</div>
+				</div>
+				<div class="opt-box">
+					<button class="btn-opt prev nomore" title="向上">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#csdnc-chevronup"></use>
+						</svg>
+					</button>
+					<button class="btn-opt next">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#csdnc-chevrondown"></use>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</li>
+		<li>
+			<button class="btn-bookmark" title="收藏">
+				<svg class="icon active" aria-hidden="true">
+					<use xlink:href="#csdnc-bookmark-ok"></use>
+				</svg><svg class="icon no-active" aria-hidden="true">
+					<use xlink:href="#csdnc-bookmark"></use>
+				</svg><br>收藏
+			</button>
+		</li>
+				<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_weixin" data-cmd="weixin" title="微信分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-wechat"></use>
+				</svg><br>微信
+			</a>
+		</li>
+		<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_tsina" data-cmd="tsina" title="微博分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-weibo"></use>
+				</svg><br>微博
+			</a>
+		</li>
+		<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_qzone" data-cmd="qzone" title="QQ分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-qq"></use>
+				</svg><br>QQ
+			</a>
+		</li>
+	</ul>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'https://csdnimg.cn/static/api/js/share.js?v=89860594'];</script>
+<script>
+    var recommendCount = 10;
+    recommendCount = recommendCount > 1 ? (recommendCount + (recommendCount>6 ? 2 : 1)) : recommendCount;
+    var articleTit = "Python使用Redis数据库";
+    var ChannelId = 6;
+    var articleId = "81051768";
+    var commentscount = 0;
+    var islock = false;
+    var curentUrl = "https://blog.csdn.net/xiaochendefendoushi/article/details/81051768";
+    var myUrl = "https://my.csdn.net/";
+    //1禁止评论，2正常
+    var commentAuth = 2;
+    //百度搜索
+    var baiduKey = "";
+    var needInsertBaidu = true;
+    // 代码段样式
+    var codeStyle = 'dracula';
+    var highlight = ["python","\u4f7f\u7528","redis","\u6570\u636e\u5e93"];//高亮数组
+</script>
+<script src="https://csdnimg.cn/public/sandalstrap/1.3/js/sandalstrap.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/vendor/pagination/paging.js"></script>
+<script src='https://csdnimg.cn/public/common/gotop/js/goTop-v1.0.min.js?v201803151422'></script>
+<script>
+    GoTop({
+        right: 8,
+        hasReport: true,
+        reportFun: function() {
+            showReport(false,"Python使用Redis数据库");
+        }
+    })
+</script>
+<script src="https://csdnimg.cn/release/phoenix/template/js/common-da13470b4c.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/template/js/detail-e0d3bbff39.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/themes/skin-yellow/skin-yellow-22f3069ef3.min.js"></script>
+</body>
+<div class="box-box-default">
+    <a class="btn-remove">
+        关闭
+    </a>
+    <script type="text/javascript" src="//cee1.iteye.com/mhzzjepzz.js"></script>
+</div>
+<div class="box-box-large">
+    <a class="btn-remove">
+        关闭
+    </a>
+    <script type="text/javascript" src="//cee1.iteye.com/idvveasfs.js"></script>
+</div>
+<!-- 第四范式SDK -->
+<script src="https://nbrecsys.4paradigm.com/resource/js/sdk-csdn-smallflow.prod.0711.js" async defer></script>
+
+<!-- 高亮未与 markdown兼容  -->
+	<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.1.10/ckeditor/plugins/chart/chart.css" />
+	<script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.1.10/ckeditor/plugins/chart/lib/chart.min.js"></script>
+	<script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.1.10/ckeditor/plugins/chart/widget2chart.js"></script>
+	<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.1.10/ckeditor/plugins/codesnippet/lib/highlight/styles/dracula.css">
+	<script type="text/javascript" src="https://csdnimg.cn/release/phoenix/production/pc_wap_common-93244aa03c.js" /></script>
+
+	<script type="text/javascript">
+	$(function(){
+		var allEscRegex = /&(lt|gt|amp|quot|nbsp|shy|#\d{1,5});/g,
+		    namedEntities = {
+					lt: '<',
+					gt: '>',
+					amp: '&',
+					quot: '"',
+					nbsp: '\u00a0',
+					shy: '\u00ad'
+				}
+		var allEscDecode = function( match, code ) {
+				return namedEntities[ code ];
+		};
+		htmlDecodeAttr = function( text ) {
+				return text.replace( allEscRegex, allEscDecode );
+		}
+	  hljs.initHighlightingOnLoad();
+	  hljs.initCopyButtonOnLoad();
+	  hljs.initLineNumbersOnLoad();
+		if($('pre .language-plain').length>0){
+			$('pre .language-plain').each(function(i,e){
+				var highlightRe = hljs.highlightAuto(htmlDecodeAttr(e.innerHTML))
+				e.innerHTML = highlightRe.value;
+				e.className = 'language-'+highlightRe.language;
+			});
+		}
+	})
+	</script>
+</html>

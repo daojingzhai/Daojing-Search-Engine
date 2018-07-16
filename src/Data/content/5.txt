@@ -1,0 +1,133 @@
+Elasticsearch不支持事务有什么好的弥补方案吗？ - CSDN博客
+
+1、问题
+
+源自星球同学的提问：es如何与hive或mysql结合使用？es不支持事务有什么好的弥补方案吗？
+
+2、事务的核心概念
+
+如果一个数据库声称支持事务的操作，那么该数据库必须要具备以下ACID四个特性：
+
+原子性 （Atomicity）
+
+原子性是指事务包含的所有操作要么全部成功，要么全部失败回滚，
+
+（Atomicity） 原子性是指事务包含的所有操作要么全部成功，要么全部失败回滚， 一致性 （Consistency）
+
+一致性是指事务必须使数据库从一个一致性状态变换到另一个一致性状态，也就是说一个事务执行之前和执行之后都必须处于一致性状态。
+
+（Consistency） 一致性是指事务必须使数据库从一个一致性状态变换到另一个一致性状态，也就是说一个事务执行之前和执行之后都必须处于一致性状态。 隔离性 （Isolation）
+
+隔离性是当多个用户并发访问数据库时，比如操作同一张表时，数据库为每一个用户开启的事务，不能被其他事务的操作所干扰，多个并发事务之间要相互隔离。
+
+（Isolation） 隔离性是当多个用户并发访问数据库时，比如操作同一张表时，数据库为每一个用户开启的事务，不能被其他事务的操作所干扰，多个并发事务之间要相互隔离。 持久性（Durability）
+
+持久性是指一个事务一旦被提交了，那么对数据库中的数据的改变就是永久性的，即便是在数据库系统遇到故障的情况下也不会丢失提交事务的操作。
+
+为了更好地理解ACID，以银行账户转账为例：
+
+START TRANSACTION ; SELECT balance FROM checking WHERE customer_id = 10233276 ; UPDATE checking SET balance = balance - 200.00 WHERE customer_id = 10233276 ; UPDATE savings SET balance = balance + 200.00 WHERE customer_id = 10233276 ; COMMIT ;
+
+原子性：要么完全提交（10233276的checking余额减少200，savings 的余额增加200），要么完全回滚（两个表的余额都不发生变化）
+
+一致性：这个例子的一致性体现在 200元不会因为数据库系统运行到第3行之后，第4行之前时崩溃而不翼而飞，因为事务还没有提交。
+
+隔离性：允许在一个事务中的操作语句会与其他事务的语句隔离开，比如事务A运行到第3行之后，第4行之前，此时事务B去查询checking余额时，它仍然能够看到在事务A中被减去的200元（账户钱不变），因为事务A和B是彼此隔离的。在事务A提交之前，事务B观察不到数据的改变。
+
+持久性：一个事务一旦commit，对数据的修改是持久的。
+
+3、Elasticsearh不支持事务
+
+一些支持ACID数据存储的数据库包括：Postgres, SQLite, Oracle, MySQL (with InnoDB), and MongoDB (4.0+)，不包括Elasticsearch。
+
+Elasticsearch的底层技术是Lucene，Lucene是追求速度而非冗余的信息检索技术。Lucene具有完全不同的体系结构，可以提供极快的性能，但代价是更容易受到数据丢失的影响。
+
+丢失数据有很多种方式，如果需要的话，你需要重新创建数据。 没错，Elasticsearch有一个快照/恢复功能，但是这个过程只会在数据丢失的情况下部分恢复。 除非您在其他系统对数据有额外的备份存储，否则最新快照和中断之间的更新将会丢失。 快照/恢复在分裂大脑的情况下也无济于事，因为没有用于协调每个分区的更新的机制。 更新将会丢失。
+
+4、Elasticsearch支持的场景
+
+数据安全性场景：ElasticSearch的shard支持replication，一份数据可以保存多份，如果某一台机器挂掉了，数据在其他机器上还有，不用担心丢失。
+
+访问安全性场景：随着x-pack开源，ElasticSearch支持验证，不用担心未授权的访问。或者借助第三方search-guard等。
+
+迁移特性：ElasticSearch支持众多的插件，在和其他开源系统之间导入，导出数据都很简单。
+
+
+
+数据完整性：ElasticSearch支持保存数据原文。
+
+5、Elasticsearch不支持的场景
+
+不支持事务，如前所述。
+
+类似数据库中通过外键的复杂的多表关联操作，Elasticsearch天生支持不足。
+
+读写有一定延时，写入的数据，最快1s中能被检索到。
+
+实时性的官网解读：
+
+In Elasticsearch, this lightweight process of writing and opening a
+
+new segment is called a refresh. By default, every shard is refreshed
+
+automatically once every second. This is why we say that Elasticsearch
+
+has near real-time search: document changes are not visible to search
+
+immediately, but will become visible within 1 second.
+
+默认的刷新频率设置是1秒，也就是说文档从Index请求到对外可见能够被搜到，最少要1秒钟，强制的，你的网络和CPU再快也不行。这么做是Lucene为了提高写操作的吞吐量而做出的延迟牺牲，当然这个设置是可以手动调整的，但是并不建议你去动它，会极大地影响搜索性能。不同的应用对实时性的定义并不一样，这取决于你的需求。
+
+ES不是关系数据库，因此如果您的数据会受益于外键等等，那么ES不是您主要数据存储的好选择
+
+ES没有任何内置的身份验证或授权系统，需要借助X-pack收费工具或者第三方search-guard，对于安全性要求高的选型考量因素之一。
+
+6、系统设计数据库选型考量
+
+使用哪种产品作为数据仓库或主数据库存储完全取决于具体的应用场景。
+
+如果信息获取及分析的能力是你的首要需求，那么无疑Elasticsearch是一个好的选择。 如果你的数据并不频繁的update操作，也没有事务性操作，那么完全可以用Elasticsearch替代其他存储。 实时性要求高的场景，需要结合ACID特性的数据库和Elasticsearch结合使用。
+
+选型核心思考问题如下：
+
+
+
+7、数据库如何与Elasticsearch结合使用？
+
+设计时候注意：
+
+创建的每个Elasticsearch索引都应该由符合ACID的数据存储支持。 数据库应该是真实的最终来源，从中填充索引。 如果异常情况发生（节点丢失，中断或误操作 ）导致丢失了索引，您将能够完全恢复它。 一般的用法是另外的数据库比如NOSQL里面有一份，然后实时同步到ES，这样一个用于键值查询，一个用于各种其他查询。 如果ES升级了之类的，比如数据结构变了，那么老版本数据可以不要，直接NOSQL再导入一份到新版本，还可以恢复。 logstash的同步插件如logstash_input_jdbc 不支持同步删除操作，建议改为更新操作加标记flag，或者通过业务逻辑实现同步删除操作。
+
+核心操作：
+
+ES中只存储检索字段，方便快速检索、全文检索。 Mysql中存储全部字段，利用ACID事务特性。 通过关联字段建立关联，比如：news_id在ES和mysql中要有相同的值。 核心数据先通过ES快速获取Id（如news_id）,再通过Mysql二次查询。
+
+参考：
+
+https://zhuanlan.zhihu.com/p/29166694
+
+https://zhuanlan.zhihu.com/p/37031059
+
+http://t.cn/RgUgU06
+
+http://t.cn/RVomKfW
+
+https://bonsai.io/blog/ideal-elasticsearch-cluster/
+
+http://t.cn/RQK1Ksu
+
+http://t.cn/RgUd3GN
+
+
+
+加入知识星球，更短时间更快习得更多干货！
+
+2017-07-15 14:39 思于家中床前
+
+作者：铭毅天下
+
+转载请标明出处，原文地址：
+
+https://blog.csdn.net/laoyang360/article/details/81052892
+
+如果感觉本文对您有帮助，请点击‘顶’支持一下，您的支持是我坚持写作最大的动力，谢谢！
