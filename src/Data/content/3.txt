@@ -1,0 +1,219 @@
+Python使用Redis数据库
+
+Redis 简介
+
+Redis是开源的高性能Key-Value数据库,可以用于缓存等用途.
+
+Redis可以提供事务和持久化支持保证并发安全性,并提供TTL(time to life)服务.
+
+使用Redis
+
+Ubuntu系统可以用包管理器安装Redis服务:
+
+sudo apt-get install redis-server
+
+并安装客户端:
+
+sudo apt-get install redis-tools
+
+进入Redis客户端
+
+redis-cli
+
+登录远程Redis服务
+
+redis-cli -h host -p port -a password
+
+Redis基本操作指令
+
+Redis的Key-Value均为大小写敏感的,但是Redis指令对大小写不敏感.
+
+Redis使用字符串作为Key,常用操作命令有:
+
+SET key val
+
+设置键值对,无则新建有则更新
+
+127 .0 .0 .1 :6379 > set user name OK
+
+DEL key
+
+删除键值对, 返回删除的条数
+
+127 .0 .0 .1 :6379 > del user ( integer ) 1
+
+GET key
+
+返回Value
+
+127 .0 .0 .1 :6379 > get user " name "
+
+EXISTS key
+
+检查指定键值对是否存在
+
+127 .0 .0 .1 :6379 > exists user ( integer ) 1
+
+KEYS pattern
+
+使用通配符筛选显示所有符合条件的键
+
+keys * 1 ) "playing_yichya" 2 ) "playing_yy" 3 ) "online_yichya" 4 ) "user" 5 ) "online_yy" keys * _ * 1 ) "playing_yichya" 2 ) "playing_yy" 3 ) "online_yichya" 4 ) "online_yy"
+
+RANDOMKEY
+
+随机返回一个键
+
+127 .0 .0 .1 :6379 > randomkey " hm1 "
+
+RENAME key newname
+
+重命名键
+
+127 .0 .0 .1 :6379 > set user2 234 OK 127 .0 .0 .1 :6379 > set user 233 OK 127 .0 .0 .1 :6379 > rename user user2 OK 127 .0 .0 .1 :6379 > get user ( nil )
+
+RENAMEX key newname
+
+重命名键, 不允许新名与已有的键名重复
+
+QUIT
+
+退出redis客户端
+
+Redis TTL服务命令
+
+EXPIRE key seconds
+
+以秒为单位,指定键值对的生存周期
+
+127 .0 .0 .1 :6379 > expire user 10000 ( integer ) 1
+
+PEXIRE key mseconds
+
+以毫秒为单位,指定键值对的生存周期
+
+TTL key
+
+以秒为单位,返回键值对的剩余生存周期
+
+127 .0 .0 .1 :6379 > ttl user ( integer ) 9996
+
+PTTL key
+
+以毫秒为单位,返回键值对的剩余生存周期
+
+127 .0 .0 .1 :6379 > pttl user ( integer ) 9991684
+
+PERSIST key
+
+将键值对的生存周期设为永久
+
+127 .0 .0 .1 :6379 > persist user ( integer ) 1
+
+EXPIREAT key timestamp
+
+使用Unix时间戳指定过期时间
+
+Redis哈希命令
+
+Redis哈希命令以Hash表作为数据结构, Hash表中所有键值对共享同样的TTL,并有着比通常键值对更快的操作速度.
+
+HSET table key val
+
+示例:
+
+127 .0 .0 .1 :6379 > hset hml yichya 233 ( integer ) 1
+
+执行keys和hkeys命令,可以看出hash表的数据结构
+
+127 .0 .0 .1 :6379 > keys * 1) " hml " 2) " user " 127 .0 .0 .1 :6379 > hkeys hml 1) " yichya "
+
+HDEL table key
+
+删除键
+
+HGET table key
+
+得到键值对
+
+HKEYS tabel
+
+得到哈希表上所有键
+
+HGETALL table
+
+返回所有key和value
+
+127 .0 .0 .1 :6379 > hgetall hml 1) " yichya " 2) "233"
+
+Redis事务支持
+
+MULTI
+
+开启事务块
+
+127 .0 .0 .1 :6379 > multi OK
+
+EXEC
+
+提交事务执行
+
+DISCARD
+
+放弃事务
+
+WATCH key [key ...]
+
+WATCH命令在事务执行之前监控Keys.
+
+若在WATCH之后有任何Key的值发生了变化，EXEC命令执行的事务都将被放弃，同时返回Null multi-bulk
+
+UNWATCH
+
+放弃所有WATCH
+
+Python使用Redis数据库
+
+redis-py是常用的python-redis连接器,使用python包管理器安装此模块:
+
+pip install redis
+
+在Python环境下导入redis模块
+
+>>> from redis import Redis
+
+>>> r = Redis()
+
+Redis是封装了Redis数据库操作的类,并提供了类似的API.
+
+使用JSON存储
+
+除Redis-Hash表之外,redis-py将键值都作为字符串处理
+
+> r.set( 'user' , 233 ) True > r.get( 'user' ) '233'
+
+对于复杂数据类型,处理返回的字符串非常不便:
+
+> r.set( 'user' , [ 1 ,[{ 'name' : 'yichya' }]]) True > r.get( 'user' ) "[1, [{'name': 'yichya'}]]" > result = r.get( 'user' ) > list(result) [ '[' , '1' , ',' , ' ' , '[' , '{' , "'" , 'n' , 'a' , 'm' , 'e' , "'" , ':' , ' ' , "'" , 'y' , 'i' , 'c' , 'h' , 'y' , 'a' , "'" , '}' , ']' , ']' ]
+
+可以选择使用JSON作为存储类型,并以python内置json模块进行编码和解码.
+
+另外,一个redis实例只维护一个数据表而应用中经常出现需要维护多个字典的情况.
+
+草民建议使用prefix+key作为redis的键来模拟多个数据表.
+
+草民写了一个简单的Redis-dict适配器,允许以类似字典的方式操作Redis数据库:
+
+from redis import Redis import json class RedisDict : def __init__ (self, prefix= '' ) : self.data = Redis() self.prefix = prefix def get (self, key) : redis_key = self.prefix + '_' + key redis_val = self.data.get(redis_key) if redis_val is None : return None else : return json.loads(redis_val) def set (self, key, val) : redis_key = self.prefix + '_' + key redis_val = json.dumps(val) self.data.set(redis_key, redis_val) def pop (self, key) : redis_key = self.prefix + '_' + key self.data.delete(redis_key) def __iter__ (self) : for item in self.data.keys(self.prefix + '*' ): prefix, key = decode(item) yield key def decode (redis_key) : sep = redis_key.find( '_' ) prefix = redis_key[:sep] key = redis_key[sep+ 1 :] return prefix, key if __name__ == '__main__' : r = RedisCache( 'online' ) r.set( 'user' , [ 1 ,[{ 'name' : 'yichya' }]]) for item in r: print(item) print(r.get(item))
+
+hash表操作
+
+redis-py的hash操作与redis命令类似:
+
+from redis import Redis import json class RedisDict : def __init__ (self, table) : self.session = Redis() self.table = table self.session.delete(table) def get (self, key) : redis_val = self.session.hget(self.table, key) if redis_val is None : return None else : return json.loads(redis_val) def set (self, key, val) : redis_val = json.dumps(val) self.session.hset(self.table, key, redis_val) def pop (self, key) : self.session.hdel(self.table, key) def __iter__ (self) : for key in self.session.hkeys(self.table): yield key
+
+用hash表模拟dict,这个实现比用前缀区分高效得多.
+
+pipeline操作
+
+Redis-Server是一个TCP服务器,使用pipline维护消息队列可以提高批量处理的效率.

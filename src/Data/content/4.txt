@@ -1,0 +1,261 @@
+一小时学会 Redis 数据库
+
+1.1 Redis 简介
+
+1.1.1 介绍
+
+Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对(key-value)存储数据库。从2015年6月开始，Redis的开发由Redis Labs赞助，而2013年5月至2015年6月期间，其开发由Pivotal赞助。在2013年5月之前，其开发由VMware赞助。根据月度排行网站DB-Engines.com的数据显示，Redis是最流行的键值对存储数据库。
+
+数据来源：https://db-engines.com/en/ranking
+
+Redis采用内存(In-Memory)数据集(DataSet) 。
+
+支持多种数据类型。
+
+运行于大多数POSIX系统，如Linux、*BSD、OS X等。
+
+Redis作者： Salvatore Sanfilippo
+
+作者GitHUB: https://github.com/antirez/redis
+
+1.1.2 软件获取和帮助
+
+官方网站：https://redis.io
+
+官方各版本下载地址：http://download.redis.io/releases/
+
+Redis 中文命令参考：http://redisdoc.com
+
+中文网站1：http://redis.cn
+
+中文网站2：http://www.redis.net.cn
+
+1.1.3 Redis 特性
+
+高速读写，数据类型丰富 支持持久化，多种内存分配及回收策略 支持弱事务，消息队列、消息订阅 支持高可用，支持分布式分片集群
+
+1.1.4 企业缓存数据库解决方案对比
+
+Memcached:
+
+优点：高性能读写、单一数据类型、支持客户端式分布式集群、一致性hash多核结构、多线程读写性能高。
+
+缺点：无持久化、节点故障可能出现缓存穿透、分布式需要客户端实现、跨房数据同步困难、架构扩容复杂度高
+
+Redis:
+
+优点：高性能读写、多数据类型支持、数据持久化、高可用架构、支持自定义虚拟内存、支持分布式分片集群、单线程读写性能极高
+
+缺点：多线程读写较Memcached慢
+
+Tair： 官方网站：http://tair.taobao.org
+
+优点：高性能读写、支持三种存储引擎（ddb、rdb、ldb）、支持高可用、支持分布式分片集群、支撑了几乎所有淘宝业务的缓存。
+
+缺点：单机情况下，读写性能较其他两种产品较慢。
+
+1.1.5 Redis 应用场景
+
+数据高速缓存,web会话缓存（Session Cache）
+
+排行榜应用
+
+消息队列,发布订阅
+
+附录 - Redis的企业应用
+
+1.2 Redis 简单部署
+
+1.2.1 典型安装 - 单实例
+
+系统环境说明
+
+[root@Redis ~] # cat /etc/redhat-release CentOS release 6.9 (Final) [root@Redis ~] # uname -r 2.6.32-696 .el6.x86_64 [root@Redis ~] # sestatus SELinux status: disabled [root@Redis ~] # /etc/init.d/iptables status iptables: Firewall is not running. [root@Redis ~] # hostname -I 10.0.0.186 172.16.1.186
+
+安装redis
+
+[root@Redis ~] # cd /usr/local/ [root@Redis local] # wget http://download.redis.io/releases/redis-3.2.10.tar.gz [root@Redis local] # tar xzf redis-3.2.10.tar.gz [root@Redis local] # \rm redis-3.2.10.tar.gz [root@Redis local] # mv redis-3.2.10 redis [root@Redis local] # cd redis/ [root@Redis redis] # make
+
+至此redis就安装完成
+
+1.2.2 启动第一个 redis 实例
+
+创建客户端软连接
+
+[root@Redis src] # ln -s /usr/local/redis/src/redis-cli /usr/bin/
+
+简单启动方法，都使用默认配置
+
+[root@Redis ~] # cd /usr/local/redis/src [root@Redis src] # ./redis-server &
+
+编写配置文件
+
+1、精简化配置文件
+
+[root@Redis redis] # cp redis.conf{,.bak} [root@Redis redis] # grep -Ev '^$|#' redis.conf.bak > redis.conf [root@Redis redis] # cp redis.conf /etc/
+
+2、编辑配置文件
+
+[root@Redis ~] # cat /etc/redis.conf bind 127.0.0.1 10.0.0.186 protected - mode yes port 6379 tcp -backlog 511 timeout 0 tcp -keepalive 300 daemonize yes supervised no pidfile /var/run/ redis_6379.pid loglevel notice logfile " /var/log/redis_6379.log " dir /usr/local/redis/data/ # ···
+
+配置文件说明：https://www.cnblogs.com/zhang-ke/p/5981108.html
+
+3、编写启动脚本（适用于CentOS 6.X）
+
+View Code redis管理脚本
+
+注意：自编写脚本注意执行权限。
+
+1.2.3 Redis 多实例配置
+
+注意：本次多实例配置基于单实例配置完成后
+
+创建并进入程序目录
+
+[root@Redis redis] # mkdir /application/redis -p [root@Redis redis] # cd /application/redis/
+
+修改配置文件
+
+for i in 0 1 2 do # 创建多实例(端口命名)目录 mkdir -p 638 $i # 复制启动程序到各实例 \cp /usr/local/redis/src/redis-server /application/redis/638$i/ # 复制配置文件。注意：此处基于单实例配置完成 \cp /etc/redis.conf /application/redis/638$i/ # 修改程序存储目录 sed -i " /dir/s#.*#dir /application/redis/638$i/#g " /application/redis/638$i/ redis.conf # 修改其他端口信息 sed -i " s#6379#638$i#g " /application/redis/638$i/ redis.conf # 允许远程连接redis sed -i ' /protected-mode/s#yes#no#g ' /application/redis/638$i/ redis.conf done
+
+# 启动实例
+
+for i in 0 1 2 do /application/redis/638$i/redis-server /application/redis/638$i/ redis.conf done
+
+连接redis
+
+[root@Redis redis] # redis-cli -h 10.0.0.186 -p 6379 10.0.0.186:6379>
+
+1.2.4 redis.conf 配置说明
+
+是否后台运行：
+
+daemonize no/yes
+
+默认端口：
+
+port 6379
+
+AOF日志开关是否打开：
+
+appendonly no/yes
+
+日志文件位置
+
+logfile /var/log/redis.log
+
+RDB持久化数据文件:
+
+dbfilename dump.rdb
+
+指定IP进行监听
+
+bind 10.0.0.51 ip2 ip3 ip4
+
+禁止protected-mode
+
+protected-mode yes/no （保护模式，是否只允许本地访问）
+
+增加requirepass {password}
+
+requirepass root
+
+在redis-cli中使用
+
+auth {password} 进行认证
+
+1.2.5 在线变更配置
+
+获取当前配置
+
+CONFIG GET *
+
+变更运行配置
+
+CONFIG SET loglevel " notice "
+
+修改密码为空
+
+10.0.0.186:6379> config set requirepass "" 10.0.0.186:6379> exit 10.0.0.186:6379> config get dir 1) " dir " 2) " /usr/local/redis/data "
+
+1.3 Redis 数据持久化
+
+1.3.1 持久化策略
+
+redis 提供了多种不同级别的持久化方式:一种是RDB,另一种是AOF.
+
+RDB 持久化
+
+可以在指定的时间间隔内生成数据集的时间点快照（point-in-time snapshot）。
+
+AOF 持久化
+
+记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。 AOF 文件中的命令全部以 Redis 协议的格式来保存，新命令会被追加到文件的末尾。
+
+Redis 还可以在后台对 AOF 文件进行重写（rewrite），使得 AOF 文件的体积不会超出保存数据集状态所需的实际大小。Redis 还可以同时使用 AOF 持久化和 RDB 持久化。 在这种情况下， 当 Redis 重启时， 它会优先使用 AOF 文件来还原数据集， 因为 AOF 文件保存的数据集通常比 RDB 文件所保存的数据集更完整。
+
+你甚至可以关闭持久化功能，让数据只在服务器运行时存在。
+
+1.3.2 RDB 持久化
+
+RDB的优点
+
+⚔ RDB 是一个非常紧凑（compact）的文件，它保存了 Redis 在某个时间点上的数据集。 这种文件非常适合用于进行备份： 比如说，你可以在最近的 24 小时内，每小时备份一次 RDB 文件，并且在每个月的每一天，也备份一个 RDB 文件。 这样的话，即使遇上问题，也可以随时将数据集还原到不同的版本。
+
+⚔ RDB 非常适用于灾难恢复（disaster recovery）：它只有一个文件，并且内容都非常紧凑，可以（在加密后）将它传送到别的数据中心，或者亚马逊 S3 中。
+
+⚔ RDB 可以最大化 Redis 的性能：父进程在保存 RDB 文件时唯一要做的就是 fork 出一个子进程，然后这个子进程就会处理接下来的所有保存工作，父进程无须执行任何磁盘 I/O 操作。
+
+⚔ RDB 在恢复大数据集时的速度比 AOF 的恢复速度要快。
+
+RDB的缺点
+
+如果你需要尽量避免在服务器故障时丢失数据，那么 RDB 不适合你。
+
+虽然 Redis 允许你设置不同的保存点（save point）来控制保存 RDB 文件的频率， 但是， 因为RDB 文件需要保存整个数据集的状态， 所以它并不是一个轻松的操作。 因此你可能会至少 5 分钟才保存一次 RDB 文件。 在这种情况下， 一旦发生故障停机， 你就可能会丢失好几分钟的数据。
+
+每次保存 RDB 的时候，Redis 都要 fork() 出一个子进程，并由子进程来进行实际的持久化工作。 在数据集比较庞大时， fork() 可能会非常耗时，造成服务器在某某毫秒内停止处理客户端；如果数据集非常巨大，并且 CPU 时间非常紧张的话，那么这种停止时间甚至可能会长达整整一秒。 虽然 AOF 重写也需要进行 fork() ，但无论 AOF 重写的执行间隔有多长，数据的耐久性都不会有任何损失。
+
+1.3.3 AOF 持久化
+
+AOF 优点
+
+使用AOF 会让你的Redis更加耐久: 你可以使用不同的fsync策略：无fsync,每秒fsync,每次写的时候fsync.使用默认的每秒fsync策略,Redis的性能依然很好(fsync是由后台线程进行处理的,主线程会尽力处理客户端请求),一旦出现故障，你最多丢失1秒的数据.
+
+Redis 可以在 AOF 文件体积变得过大时，自动地在后台对 AOF 进行重写： 重写后的新 AOF 文件包含了恢复当前数据集所需的最小命令集合。 整个重写操作是绝对安全的，因为 Redis 在创建新 AOF 文件的过程中，会继续将命令追加到现有的 AOF 文件里面，即使重写过程中发生停机，现有的 AOF 文件也不会丢失。
+
+一旦新 AOF 文件创建完毕，Redis 就会从旧 AOF 文件切换到新 AOF 文件，并开始对新 AOF 文件进行追加操作。
+
+AOF 文件有序地保存了对数据库执行的所有写入操作， 这些写入操作以 Redis 协议的格式保存， 因此 AOF 文件的内容非常容易被人读懂，对文件进行分析（parse）也很轻松。 导出（export） AOF 文件也非常简单： 举个例子， 如果你不小心执行了 FLUSHALL 命令， 但只要 AOF 文件未被重写， 那么只要停止服务器， 移除 AOF 文件末尾的 FLUSHALL 命令， 并重启 Redis ， 就可以将数据集恢复到 FLUSHALL 执行之前的状态。
+
+AOF 缺点
+
+对于相同的数据集来说，AOF 文件的体积通常要大于 RDB 文件的体积。根据所使用的 fsync 策略，AOF 的速度可能会慢于 RDB 。
+
+在一般情况下， 每秒 fsync 的性能依然非常高， 而关闭 fsync 可以让 AOF 的速度和 RDB 一样快， 即使在高负荷之下也是如此。 不过在处理巨大的写入载入时，RDB 可以提供更有保证的最大延迟时间（latency）。
+
+AOF 在过去曾经发生过这样的 bug ：因为个别命令的原因，导致 AOF 文件在重新载入时，无法将数据集恢复成保存时的原样。 （举个例子，阻塞命令 BRPOPLPUSH 就曾经引起过这样的 bug 。） 测试套件里为这种情况添加了测试： 它们会自动生成随机的、复杂的数据集， 并通过重新载入这些数据来确保一切正常。
+
+虽然这种 bug 在 AOF 文件中并不常见， 但是对比来说， RDB 几乎是不可能出现这种 bug 的。
+
+1.3.4 如何选择使用哪种持久化方式
+
+一般来说， 如果想达到足以媲美 PostgreSQL 的数据安全性， 你应该同时使用两种持久化功能。
+
+如果你非常关心你的数据， 但仍然可以承受数分钟以内的数据丢失， 那么你可以只使用 RDB 持久化。
+
+有很多用户都只使用 AOF 持久化， 但我们并不推荐这种方式： 因为定时生成 RDB 快照（snapshot）非常便于进行数据库备份， 并且 RDB 恢复数据集的速度也要比 AOF 恢复的速度要快， 除此之外， 使用 RDB 还可以避免之前提到的 AOF 程序的 bug 。
+
+Note: 因为以上提到的种种原因， 未来redis可能会将 AOF 和 RDB 整合成单个持久化模型（这是一个长期计划）。
+
+1.3.5 快照实现持久化
+
+在默认情况下， Redis 将数据库快照保存在名字为 dump.rdb的二进制文件中。你可以对 Redis 进行设置， 让它在“ N 秒内数据集至少有 M 个改动”这一条件被满足时， 自动保存一次数据集。
+
+你也可以通过调用 SAVE或者 BGSAVE ， 手动让 Redis 进行数据集保存操作。
+
+比如说， 以下设置会让 Redis 在满足“ 60 秒内有至少有 1000 个键被改动”这一条件时， 自动保存一次数据集: save 60 1000
+
+这种持久化方式被称为快照 snapshotting.
+
+当 Redis 需要保存 dump.rdb 文件时， 服务器执行以下操作:

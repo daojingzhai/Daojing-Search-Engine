@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="https://blog.csdn.net/xiaochendefendoushi/article/details/81051729"/> 
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="referrer" content="always">
+    <meta name="description" content="1.1 Redis简介1.1.1 介绍Redis是一个使用ANSI C编写的开源、支持网络、基于内存、可选持久性的键值对(key-value)存储数据库。从2015年6月开始，Redis的开发由Redis Labs赞助，而2013年5月至2015年6月期间，其开发由Pivotal赞助。在2013年5月之前，其开发由VMware赞助。根据月度排行网站DB-Engines.com的数据显示，Redis..." />
+    <meta name="keywords" content="redis,python" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+    <meta name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848">
+    <script src="https://csdnimg.cn/release/phoenix/vendor/tingyun/tingyun-rum-blog.js"></script>
+
+    <link href="https://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">
+    <title>一小时学会 Redis 数据库 - CSDN博客</title>
+    
+            <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/detail-57e3201eaa.min.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/themes/skin-blackboard/skin-blackboard-916eb1673a.min.css">
+
+    <script type="text/javascript">
+        var username = "xiaochendefendoushi";
+        var blog_address = "https://blog.csdn.net/xiaochendefendoushi";
+        var static_host = "https://csdnimg.cn/release/phoenix/";
+        var currentUserName = ""; 
+        var isShowAds = true;
+        var isOwner = false;
+        var loginUrl = "https://passport.csdn.net/account/login?from=https://blog.csdn.net/xiaochendefendoushi/article/details/81051729"
+        var blogUrl = "https://blog.csdn.net/";
+        //页面皮肤样式
+        var curSkin = "skin-blackboard";
+    </script>
+    <script type="text/javascript">
+        // Traffic Stats of the entire Web site By baidu
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6bcd52f51e9b3dce32bec4a3997715ac";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+        // Traffic Stats of the entire Web site By baidu end
+    </script>
+    <script src="https://csdnimg.cn/public/common/libs/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="https://csdnimg.cn/rabbit/exposure-click/main-1.0.6.js"></script>
+    <!-- 新版上报 -->
+    <script src="//g.csdnimg.cn/track/1.0.1/track.js" type="text/javascript"></script>
+    <!-- 新版上报end -->
+            <link rel="stylesheet" href="https://csdnimg.cn/public/sandalstrap/1.3/css/sandalstrap.min.css"> 
+    <style>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </style>
+</head>
+<body>    
+    <link rel="stylesheet" href="https://csdnimg.cn/public/common/toolbar/content_toolbar_css/content_toolbar.css">
+    <script id="toolbar-tpl-scriptId" src="https://csdnimg.cn/public/common/toolbar/js/content_toolbar.js" type="text/javascript" domain="https://blog.csdn.net/"></script>
+    <script src="https://csdnimg.cn/public/sandalstrap/1.3/fonts/csdnc/csdnc.js"></script><link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/blog_code-c3a0c33d5c.css">
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/vendor/pagination/paging.css">
+<script type="text/javascript" src="//static.mediav.com/js/mvf_news_feed.js"></script>
+<div style="display:none;">
+	<img src="" onerror='setTimeout(function(){if(!/(csdn.net|iteye.com|baiducontent.com|googleusercontent.com|360webcache.com|sogoucdn.com|bingj.com|baidu.com)$/.test(window.location.hostname)){window.location.href="\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x77\x77\x2e\x63\x73\x64\x6e\x2e\x6e\x65\x74"}},3000);'>
+</div>
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/chart-3456820cac.css" />
+
+
+<header>
+	<div class="container d-flex clearfix">
+		<div class="title-box">
+			<h2 class="title-blog">
+				<a href="https://blog.csdn.net/xiaochendefendoushi">灰寨小学的python---小陈</a>
+			</h2>
+			<p class="description">人生苦短 我用python</p>
+		</div>
+		<div class="opt-box d-flex justify-content-end">
+			<a class="btn btn-sm" href="https://blog.csdn.net/xiaochendefendoushi/rss/list">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#csdnc-rss"></use>
+					</svg>RSS订阅</a>
+					</div>
+	</div>
+</header><script src="https://dup.baidustatic.com/js/ds.js"></script>
+<div class="container clearfix pt0" id="mainBox">
+    <main>
+        <div class="blog-content-box">
+	<div class="article-title-box">
+			<span class="article-type type-2 float-left">转</span>		<h1 class="title-article">一小时学会 Redis 数据库</h1>
+	</div>
+	<div class="article-info-box">
+		<div class="article-bar-top d-flex">
+												<span class="time">2018年07月15日 12:04:24</span>
+			<div class="float-right">
+				<span class="read-count">阅读数：129</span>
+											</div>
+		</div>
+	</div>
+	<article>
+		<div id="article_content" class="article_content clearfix csdn-tracking-statistics" data-pid="blog"  data-mod=popu_307  data-dsm = "post" >
+                    <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-e2445db1a8.css" />
+						<div class="htmledit_views">
+                <h2 id="auto_id_0" style="font-size:18px;line-height:25px;background:rgb(6,129,186);color:rgb(255,255,255);font-family:'微软雅黑', '宋体', '黑体', Arial;">1.1 Redis<span style="font-family:'微软雅黑', sans-serif;">简介</span></h2><p align="center" style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><img src="https://images2017.cnblogs.com/blog/1190037/201802/1190037-20180203144714562-1932983408.png" alt="" style="border:0px;font-size:0px;" /></p><h3 id="auto_id_1" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.1.1 <span style="font-family:'微软雅黑', sans-serif;">介绍</span></h3><p style="text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">Redis<span style="font-family:'微软雅黑', sans-serif;">是一个使用</span>ANSI C<span style="font-family:'微软雅黑', sans-serif;">编写的开源、支持网络、基于内存、可选持久性的键值对</span>(key-value)<span style="font-family:'微软雅黑', sans-serif;">存储数据库。从</span>2015<span style="font-family:'微软雅黑', sans-serif;">年</span>6<span style="font-family:'微软雅黑', sans-serif;">月开始，</span>Redis<span style="font-family:'微软雅黑', sans-serif;">的开发由</span>Redis Labs<span style="font-family:'微软雅黑', sans-serif;">赞助，而</span>2013<span style="font-family:'微软雅黑', sans-serif;">年</span>5<span style="font-family:'微软雅黑', sans-serif;">月至</span>2015<span style="font-family:'微软雅黑', sans-serif;">年</span>6<span style="font-family:'微软雅黑', sans-serif;">月期间，其开发由</span>Pivotal<span style="font-family:'微软雅黑', sans-serif;">赞助。在</span>2013<span style="font-family:'微软雅黑', sans-serif;">年</span>5<span style="font-family:'微软雅黑', sans-serif;">月之前，其开发由</span>VMware<span style="font-family:'微软雅黑', sans-serif;">赞助。根据月度排行网站</span>DB-Engines.com<span style="font-family:'微软雅黑', sans-serif;">的数据显示，</span>Redis<span style="font-family:'微软雅黑', sans-serif;">是最流行的键值对存储数据库。</span></p><p align="center" style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"> <img src="https://images2017.cnblogs.com/blog/1190037/201802/1190037-20180203144723140-1349675576.png" alt="" style="border:0px;font-size:0px;" /></p><p align="right" style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);text-align:right;"><span style="font-family:'微软雅黑', sans-serif;">数据来源：</span><a href="https://db-engines.com/en/ranking" rel="nofollow" style="color:rgb(6,129,186);">https://db-engines.com/en/ranking</a></p><p style="text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">Redis<span style="font-family:'微软雅黑', sans-serif;">采用内存</span>(In-Memory)<span style="font-family:'微软雅黑', sans-serif;">数据集</span>(DataSet) <span style="font-family:'微软雅黑', sans-serif;">。</span></p><p style="text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">支持多种数据类型。</span></p><p style="text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">运行于大多数</span>POSIX<span style="font-family:'微软雅黑', sans-serif;">系统，如</span>Linux<span style="font-family:'微软雅黑', sans-serif;">、</span>*BSD<span style="font-family:'微软雅黑', sans-serif;">、</span>OS X<span style="font-family:'微软雅黑', sans-serif;">等。</span></p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">Redis<span style="font-family:'微软雅黑', sans-serif;">作者：</span> Salvatore Sanfilippo</p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">作者</span>GitHUB: <a href="https://github.com/antirez/redis" rel="nofollow" style="color:rgb(6,129,186);">https://github.com/antirez/redis</a></p><h3 id="auto_id_2" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.1.2 <span style="font-family:'微软雅黑', sans-serif;">软件获取和帮助</span></h3><p style="margin-left:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">官方网站：</span><a href="https://redis.io/" rel="nofollow" style="color:rgb(6,129,186);">https://redis.io</a></p><p style="margin-left:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">官方各版本下载地址：</span><a href="http://download.redis.io/releases/" rel="nofollow" style="color:rgb(6,129,186);">http://download.redis.io/releases/</a></p><p style="margin-left:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">Redis <span style="font-family:'微软雅黑', sans-serif;">中文命令参考：</span><a href="http://redisdoc.com/" rel="nofollow" style="color:rgb(6,129,186);">http://redisdoc.com</a></p><p style="margin-left:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">中文网站</span>1<span style="font-family:'微软雅黑', sans-serif;">：</span><a href="http://redis.cn/" rel="nofollow" style="color:rgb(6,129,186);">http://redis.cn</a></p><p style="margin-left:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">中文网站</span>2<span style="font-family:'微软雅黑', sans-serif;">：</span><a href="http://www.redis.net.cn/" rel="nofollow" style="color:rgb(6,129,186);">http://www.redis.net.cn</a></p><h3 id="auto_id_3" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.1.3 Redis<span style="font-family:'微软雅黑', sans-serif;">特性</span></h3><blockquote style="margin-left:2em;background:rgb(255,255,255) none;border-width:2px 2px 2px 6px;border-style:solid;border-color:rgb(239,239,239) rgb(239,239,239) rgb(239,239,239) rgb(238,238,238);color:rgb(51,51,51);font-size:12px;font-style:italic;font-family:Helvetica, Verdana, Arial, sans-serif;"><p style="font-size:14px;"> 高速读写，数据类型丰富</p><div><p class="a" style="font-size:14px;">支持持久化，多种内存分配及回收策略</p><p class="a" style="font-size:14px;">支持弱事务，消息队列、消息订阅</p><p class="a" style="font-size:14px;">支持高可用，支持分布式分片集群</p></div></blockquote><h3 id="auto_id_4" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.1.4 <span style="font-family:'微软雅黑', sans-serif;">企业缓存数据库解决方案对比</span></h3><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-size:15px;"><span style="background:#FFFF00;">Memcached:</span></span></p><p style="margin-left:57pt;text-indent:-36pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">优点：高性能读写、单一数据类型、支持客户端式分布式集群、一致性</span>hash<span style="font-family:'微软雅黑', sans-serif;">多核结构、多线程读写性能高。</span></p><p style="margin-left:57pt;text-indent:-36pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">缺点：无持久化、节点故障可能出现缓存穿透、分布式需要客户端实现、跨房数据同步困难、架构扩容复杂度高</span></p><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-size:15px;"><span style="background:#FFFF00;">Redis:</span></span></p><p style="margin-left:57pt;text-indent:-36pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">优点：高性能读写、多数据类型支持、数据持久化、高可用架构、支持自定义虚拟内存、支持分布式分片集群、单线程读写性能极高</span></p><p style="margin-left:57pt;text-indent:-36pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">缺点：多线程读写较</span>Memcached<span style="font-family:'微软雅黑', sans-serif;">慢</span></p><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-size:15px;"><span style="background:#FFFF00;">Tair</span><span style="font-family:'微软雅黑', sans-serif;background:#FFFF00;">：</span> </span><span style="font-family:'微软雅黑', sans-serif;">官方网站：</span><a href="http://tair.taobao.org/" rel="nofollow" style="color:rgb(6,129,186);">http://tair.taobao.org</a></p><p style="margin-left:57pt;text-indent:-36pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">优点：高性能读写、支持三种存储引擎（</span>ddb<span style="font-family:'微软雅黑', sans-serif;">、</span>rdb<span style="font-family:'微软雅黑', sans-serif;">、</span>ldb<span style="font-family:'微软雅黑', sans-serif;">）、支持高可用、支持分布式分片集群、支撑了几乎所有淘宝业务的缓存。</span></p><p style="margin-left:57pt;text-indent:-36pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">缺点：单机情况下，读写性能较其他两种产品较慢。</span></p><p align="center" style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><img src="https://images2017.cnblogs.com/blog/1190037/201802/1190037-20180203144828390-2096132101.png" alt="" style="border:0px;font-size:0px;" /><img src="https://images2017.cnblogs.com/blog/1190037/201802/1190037-20180203144834953-982510866.png" alt="" style="border:0px;font-size:0px;" /></p><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);text-align:center;"> <img src="https://images2017.cnblogs.com/blog/1190037/201802/1190037-20180203144910953-1698164932.png" alt="" style="border:0px;font-size:0px;" /><img src="https://images2017.cnblogs.com/blog/1190037/201802/1190037-20180203144918203-1440372321.png" alt="" style="border:0px;font-size:0px;" /></p><h3 id="auto_id_5" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.1.5 Redis<span style="font-family:'微软雅黑', sans-serif;">应用场景</span></h3><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">数据高速缓存</span>,web<span style="font-family:'微软雅黑', sans-serif;">会话缓存（</span>Session Cache<span style="font-family:'微软雅黑', sans-serif;">）</span></p><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">排行榜应用</span></p><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">消息队列</span>,<span style="font-family:'微软雅黑', sans-serif;">发布订阅</span></p><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">   <span style="font-family:'微软雅黑', sans-serif;">附录</span> - Redis<span style="font-family:'微软雅黑', sans-serif;">的企业应用</span></p><p align="center" style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><img src="https://images2017.cnblogs.com/blog/1190037/201802/1190037-20180203145022671-73507842.png" alt="" style="border:0px;font-size:0px;" /> </p><h2 id="auto_id_6" style="font-size:18px;line-height:25px;background:rgb(6,129,186);color:rgb(255,255,255);font-family:'微软雅黑', '宋体', '黑体', Arial;">1.2 Redis<span style="font-family:'微软雅黑', sans-serif;">简单部署</span></h2><h3 id="auto_id_7" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.2.1 <span style="font-family:'微软雅黑', sans-serif;">典型安装</span>-<span style="font-family:'微软雅黑', sans-serif;">单实例</span></h3><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">系统环境说明</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">[root@Redis ~]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> cat /etc/redhat-release </span>
+CentOS release 6.9<span style="line-height:1.5;"> (Final)
+[root@Redis </span>~]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> uname -r </span>
+2.6.32-696<span style="line-height:1.5;">.el6.x86_64
+[root@Redis </span>~]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> sestatus </span>
+<span style="line-height:1.5;">SELinux status:                 disabled
+[root@Redis </span>~]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> /etc/init.d/iptables status</span>
+iptables: Firewall <span style="color:rgb(0,0,255);line-height:1.5;">is</span> <span style="color:rgb(0,0,255);line-height:1.5;">not</span><span style="line-height:1.5;"> running.
+[root@Redis </span>~]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> hostname -I </span>
+10.0.0.186 172.16.1.186</pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">安装</span>redis</p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">[root@Redis ~]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> cd /usr/local/</span>
+[root@Redis local]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> wget http://download.redis.io/releases/redis-3.2.10.tar.gz</span>
+[root@Redis local]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> tar xzf redis-3.2.10.tar.gz</span>
+[root@Redis local]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> \rm redis-3.2.10.tar.gz </span>
+[root@Redis local]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> mv redis-3.2.10 redis</span>
+[root@Redis local]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> cd redis/</span>
+[root@Redis redis]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> make</span></pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">   <span style="font-family:'微软雅黑', sans-serif;color:#FF0000;background:#FFFF00;">至此</span><span style="color:#FF0000;background:#FFFF00;">redis</span><span style="font-family:'微软雅黑', sans-serif;color:#FF0000;background:#FFFF00;">就安装完成</span></p><h3 id="auto_id_8" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.2.2 <span style="font-family:'微软雅黑', sans-serif;">启动第一个</span>redis<span style="font-family:'微软雅黑', sans-serif;">实例</span></h3><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">创建客户端软连接</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">[root@Redis src]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> ln -s /usr/local/redis/src/redis-cli /usr/bin/</span></pre></div><p style="text-indent:15.75pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">简单启动方法，都使用默认配置</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">[root@Redis ~]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> cd /usr/local/redis/src</span>
+[root@Redis src]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> ./redis-server &amp;</span></pre></div><p style="text-indent:24pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-size:15px;"><span style="font-family:'微软雅黑', sans-serif;background:#FFFF00;">编写配置文件</span></span></p><p style="text-indent:24pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1<span style="font-family:'微软雅黑', sans-serif;">、精简化配置文件</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">[root@Redis redis]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> cp redis.conf{,.bak}</span>
+[root@Redis redis]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> grep -Ev '^$|#' redis.conf.bak &gt; redis.conf</span>
+[root@Redis redis]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> cp redis.conf /etc/</span></pre></div><p style="text-indent:15.75pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">2<span style="font-family:'微软雅黑', sans-serif;">、编辑配置文件</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">[root@Redis ~]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> cat /etc/redis.conf </span>
+bind 127.0.0.1 10.0.0.186<span style="line-height:1.5;">
+protected</span>-<span style="line-height:1.5;">mode yes
+port </span>6379<span style="line-height:1.5;">
+tcp</span>-backlog 511<span style="line-height:1.5;">
+timeout 0
+tcp</span>-keepalive 300<span style="line-height:1.5;">
+daemonize yes
+supervised no
+pidfile </span>/var/run/<span style="line-height:1.5;">redis_6379.pid
+loglevel notice
+logfile </span><span style="color:rgb(128,0,0);line-height:1.5;">"</span><span style="color:rgb(128,0,0);line-height:1.5;">/var/log/redis_6379.log</span><span style="color:rgb(128,0,0);line-height:1.5;">"</span><span style="line-height:1.5;">
+dir </span>/usr/local/redis/data/
+<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> ···</span></pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">   <span style="font-family:'微软雅黑', sans-serif;">配置文件说明：</span>https://www.cnblogs.com/zhang-ke/p/5981108.html</p><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">   3<span style="font-family:'微软雅黑', sans-serif;">、编写启动脚本（适用于</span>CentOS 6.X<span style="font-family:'微软雅黑', sans-serif;">）</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><img id="code_img_closed_2495f376-6e30-4307-94fd-0ee7408f6842" class="code_img_closed" src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="" style="border:0px;vertical-align:middle;" /> <span class="cnblogs_code_collapse" style="border-width:1px;border-style:solid;border-color:#808080;background-color:rgb(255,255,255);line-height:1.5;">View Code redis管理脚本</span></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">   <span style="font-size:15px;"><span style="font-family:'微软雅黑', sans-serif;color:#FF0000;">注意：自编写脚本注意执行权限。</span></span></p><h3 id="auto_id_9" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.2.3 Redis<span style="font-family:'微软雅黑', sans-serif;">多实例配置</span></h3><p style="margin-left:15.75pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;background:#FFFF00;">注意：本次多实例配置基于单实例配置完成后</span></p><p style="margin-left:15.75pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">创建并进入程序目录</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">[root@Redis redis]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> mkdir /application/redis  -p</span>
+[root@Redis redis]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> cd /application/redis/</span></pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">   <span style="font-family:'微软雅黑', sans-serif;">修改配置文件</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';"><span style="color:rgb(0,0,255);line-height:1.5;">for</span> i <span style="color:rgb(0,0,255);line-height:1.5;">in</span> 0 1 2<span style="line-height:1.5;">
+  do  
+    </span><span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> 创建多实例(端口命名)目录</span>
+    mkdir -p 638<span style="line-height:1.5;">$i
+    </span><span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> 复制启动程序到各实例</span>
+    \cp /usr/local/redis/src/redis-server /application/redis/638$i/ 
+    <span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> 复制配置文件。注意：此处基于单实例配置完成</span>
+    \cp /etc/redis.conf  /application/redis/638$i/
+    <span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> 修改程序存储目录</span>
+    sed -i  <span style="color:rgb(128,0,0);line-height:1.5;">"</span><span style="color:rgb(128,0,0);line-height:1.5;">/dir/s#.*#dir /application/redis/638$i/#g</span><span style="color:rgb(128,0,0);line-height:1.5;">"</span> /application/redis/638$i/<span style="line-height:1.5;">redis.conf 
+    </span><span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> 修改其他端口信息</span>
+    sed -i  <span style="color:rgb(128,0,0);line-height:1.5;">"</span><span style="color:rgb(128,0,0);line-height:1.5;">s#6379#638$i#g</span><span style="color:rgb(128,0,0);line-height:1.5;">"</span> /application/redis/638$i/<span style="line-height:1.5;">redis.conf
+    </span><span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> 允许远程连接redis</span>
+    sed -i <span style="color:rgb(128,0,0);line-height:1.5;">'</span><span style="color:rgb(128,0,0);line-height:1.5;">/protected-mode/s#yes#no#g</span><span style="color:rgb(128,0,0);line-height:1.5;">'</span> /application/redis/638$i/<span style="line-height:1.5;">redis.conf
+done</span></pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"># <span style="font-family:'微软雅黑', sans-serif;">启动实例</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';"><span style="color:rgb(0,0,255);line-height:1.5;">for</span> i <span style="color:rgb(0,0,255);line-height:1.5;">in</span> 0 1 2<span style="line-height:1.5;"> 
+  do
+  </span>/application/redis/638$i/redis-server /application/redis/638$i/<span style="line-height:1.5;">redis.conf 
+done</span></pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">   <span style="font-family:'微软雅黑', sans-serif;">连接</span>redis</p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">[root@Redis redis]<span style="color:rgb(0,128,0);line-height:1.5;">#</span><span style="color:rgb(0,128,0);line-height:1.5;"> redis-cli -h 10.0.0.186 -p 6379</span>
+10.0.0.186:6379&gt;</pre></div><h3 id="auto_id_10" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.2.4 redis.conf<span style="font-family:'微软雅黑', sans-serif;">配置说明</span></h3><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">是否后台运行：</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">daemonize no/yes</pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">默认端口：</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">port 6379</pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">AOF<span style="font-family:'微软雅黑', sans-serif;">日志开关是否打开：</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">appendonly no/yes</pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">日志文件位置</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">logfile /var/log/redis.log</pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">RDB<span style="font-family:'微软雅黑', sans-serif;">持久化数据文件</span>:</p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">dbfilename dump.rdb</pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">指定</span>IP<span style="font-family:'微软雅黑', sans-serif;">进行监听</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">bind 10.0.0.51 ip2 ip3 ip4</pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">禁止</span>protected-mode</p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">protected-mode yes/no （保护模式，是否只允许本地访问）</pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">增加</span>requirepass {password}</p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">requirepass root</pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">在</span>redis-cli<span style="font-family:'微软雅黑', sans-serif;">中使用</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">auth {password} 进行认证</pre></div><h3 id="auto_id_11" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.2.5 <span style="font-family:'微软雅黑', sans-serif;">在线变更配置</span></h3><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">获取当前配置</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">CONFIG GET *</pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">变更运行配置</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">CONFIG SET loglevel <span style="color:rgb(128,0,0);line-height:1.5;">"</span><span style="color:rgb(128,0,0);line-height:1.5;">notice</span><span style="color:rgb(128,0,0);line-height:1.5;">"</span></pre></div><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">修改密码为空</span></p><div class="cnblogs_code" style="background-color:rgb(249,249,249);border-width:0px 0px 0px 4px;border-style:solid;border-color:rgb(204,204,204) rgb(204,204,204) rgb(204,204,204) rgb(115,220,119);color:rgb(0,0,0);font-family:'Courier New';font-size:12px;"><pre style="font-family:'Courier New';">10.0.0.186:6379&gt; config set requirepass <span style="color:rgb(128,0,0);line-height:1.5;">""</span>
+10.0.0.186:6379&gt;<span style="line-height:1.5;"> exit
+</span>10.0.0.186:6379&gt;<span style="line-height:1.5;"> config get dir
+</span>1) <span style="color:rgb(128,0,0);line-height:1.5;">"</span><span style="color:rgb(128,0,0);line-height:1.5;">dir</span><span style="color:rgb(128,0,0);line-height:1.5;">"</span>
+2) <span style="color:rgb(128,0,0);line-height:1.5;">"</span><span style="color:rgb(128,0,0);line-height:1.5;">/usr/local/redis/data</span><span style="color:rgb(128,0,0);line-height:1.5;">"</span></pre></div><h2 id="auto_id_12" style="font-size:18px;line-height:25px;background:rgb(6,129,186);color:rgb(255,255,255);font-family:'微软雅黑', '宋体', '黑体', Arial;">1.3 Redis<span style="font-family:'微软雅黑', sans-serif;">数据持久化</span></h2><h3 id="auto_id_13" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.3.1 <span style="font-family:'微软雅黑', sans-serif;">持久化策略</span></h3><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">redis <span style="font-family:'微软雅黑', sans-serif;">提供了多种不同级别的持久化方式</span>:<span style="font-family:'微软雅黑', sans-serif;">一种是</span>RDB,<span style="font-family:'微软雅黑', sans-serif;">另一种是</span>AOF.</p><p style="text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-size:15px;">RDB <span style="font-family:'微软雅黑', sans-serif;">持久化</span></span></p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">可以在指定的时间间隔内生成数据集的时间点快照（</span>point-in-time snapshot<span style="font-family:'微软雅黑', sans-serif;">）。</span></p><p style="text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-size:15px;">AOF <span style="font-family:'微软雅黑', sans-serif;">持久化</span></span></p><p style="margin-left:42pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件中的命令全部以</span> Redis <span style="font-family:'微软雅黑', sans-serif;">协议的格式来保存，新命令会被追加到文件的末尾。</span></p><p style="text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">Redis <span style="font-family:'微软雅黑', sans-serif;">还可以在后台对</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件进行重写（</span>rewrite<span style="font-family:'微软雅黑', sans-serif;">），使得</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件的体积不会超出保存数据集状态所需的实际大小。</span>Redis <span style="font-family:'微软雅黑', sans-serif;">还可以同时使用</span> AOF <span style="font-family:'微软雅黑', sans-serif;">持久化和</span> RDB <span style="font-family:'微软雅黑', sans-serif;">持久化。</span> <span style="font-family:'微软雅黑', sans-serif;">在这种情况下，</span> <span style="font-family:'微软雅黑', sans-serif;">当</span> Redis <span style="font-family:'微软雅黑', sans-serif;">重启时，</span> <span style="font-family:'微软雅黑', sans-serif;">它会优先使用</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件来还原数据集，</span> <span style="font-family:'微软雅黑', sans-serif;">因为</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件保存的数据集通常比</span> RDB <span style="font-family:'微软雅黑', sans-serif;">文件所保存的数据集更完整。</span></p><p style="text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">你甚至可以关闭持久化功能，让数据只在服务器运行时存在。</span></p><h3 id="auto_id_14" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.3.2 RDB <span style="font-family:'微软雅黑', sans-serif;">持久化</span></h3><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-size:15px;"><span style="background:#00FF00;">RDB</span><span style="font-family:'微软雅黑', sans-serif;background:#00FF00;">的优点</span></span></p><p style="margin-left:24pt;text-indent:-24pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'Segoe UI Emoji', sans-serif;">⚔</span> RDB <span style="font-family:'微软雅黑', sans-serif;">是一个非常紧凑（</span>compact<span style="font-family:'微软雅黑', sans-serif;">）的文件，它保存了</span> Redis <span style="font-family:'微软雅黑', sans-serif;">在某个时间点上的数据集。</span> <span style="font-family:'微软雅黑', sans-serif;">这种文件非常适合用于进行备份：</span> <span style="font-family:'微软雅黑', sans-serif;">比如说，你可以在最近的</span> 24 <span style="font-family:'微软雅黑', sans-serif;">小时内，每小时备份一次</span> RDB <span style="font-family:'微软雅黑', sans-serif;">文件，并且在每个月的每一天，也备份一个</span> RDB <span style="font-family:'微软雅黑', sans-serif;">文件。</span> <span style="font-family:'微软雅黑', sans-serif;">这样的话，即使遇上问题，也可以随时将数据集还原到不同的版本。</span></p><p style="margin-left:24pt;text-indent:-24pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'Segoe UI Emoji', sans-serif;">⚔</span> RDB <span style="font-family:'微软雅黑', sans-serif;">非常适用于灾难恢复（</span>disaster recovery<span style="font-family:'微软雅黑', sans-serif;">）：它只有一个文件，并且内容都非常紧凑，可以（在加密后）将它传送到别的数据中心，或者亚马逊</span> S3 <span style="font-family:'微软雅黑', sans-serif;">中。</span></p><p style="margin-left:24pt;text-indent:-24pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'Segoe UI Emoji', sans-serif;">⚔</span> RDB <span style="font-family:'微软雅黑', sans-serif;">可以最大化</span> Redis <span style="font-family:'微软雅黑', sans-serif;">的性能：父进程在保存</span> RDB <span style="font-family:'微软雅黑', sans-serif;">文件时唯一要做的就是</span> fork <span style="font-family:'微软雅黑', sans-serif;">出一个子进程，然后这个子进程就会处理接下来的所有保存工作，父进程无须执行任何磁盘</span> I/O <span style="font-family:'微软雅黑', sans-serif;">操作。</span></p><p style="margin-left:24pt;text-indent:-24pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'Segoe UI Emoji', sans-serif;">⚔</span> RDB <span style="font-family:'微软雅黑', sans-serif;">在恢复大数据集时的速度比</span> AOF <span style="font-family:'微软雅黑', sans-serif;">的恢复速度要快。</span></p><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-size:15px;"><span style="background:#00FF00;">RDB</span><span style="font-family:'微软雅黑', sans-serif;background:#00FF00;">的缺点</span></span></p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">如果你需要尽量避免在服务器故障时丢失数据，那么</span> RDB <span style="font-family:'微软雅黑', sans-serif;">不适合你。</span></p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">虽然</span> Redis <span style="font-family:'微软雅黑', sans-serif;">允许你设置不同的保存点（</span><em><span>save point</span></em><span style="font-family:'微软雅黑', sans-serif;">）来控制保存</span> RDB <span style="font-family:'微软雅黑', sans-serif;">文件的频率，</span> <span style="font-family:'微软雅黑', sans-serif;">但是，</span> <span style="font-family:'微软雅黑', sans-serif;">因为</span>RDB <span style="font-family:'微软雅黑', sans-serif;">文件需要保存整个数据集的状态，</span> <span style="font-family:'微软雅黑', sans-serif;">所以它并不是一个轻松的操作。</span> <span style="font-family:'微软雅黑', sans-serif;">因此你可能会至少</span> 5 <span style="font-family:'微软雅黑', sans-serif;">分钟才保存一次</span> RDB <span style="font-family:'微软雅黑', sans-serif;">文件。</span> <span style="font-family:'微软雅黑', sans-serif;">在这种情况下，</span> <span style="font-family:'微软雅黑', sans-serif;">一旦发生故障停机，</span> <span style="font-family:'微软雅黑', sans-serif;">你就<em><span style="background:#FFFF00;">可能会丢失好几分钟的数据</span></em>。</span></p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">每次保存</span> RDB <span style="font-family:'微软雅黑', sans-serif;">的时候，</span>Redis <span style="font-family:'微软雅黑', sans-serif;">都要</span> fork() <span style="font-family:'微软雅黑', sans-serif;">出一个子进程，并由子进程来进行实际的持久化工作。</span> <span style="font-family:'微软雅黑', sans-serif;">在数据集比较庞大时，</span> fork() <span style="font-family:'微软雅黑', sans-serif;">可能会非常耗时，造成服务器在某某毫秒内停止处理客户端；</span><span><span style="font-family:'微软雅黑', sans-serif;">如果数据集非常巨大，并且</span> CPU </span><span><span style="font-family:'微软雅黑', sans-serif;">时间非常紧张的话，那么这种停止时间甚至可能会长达整整一秒。</span></span> <span style="font-family:'微软雅黑', sans-serif;">虽然</span> AOF <span style="font-family:'微软雅黑', sans-serif;">重写也需要进行</span> fork() <span style="font-family:'微软雅黑', sans-serif;">，但无论</span> AOF <span style="font-family:'微软雅黑', sans-serif;">重写的执行间隔有多长，数据的耐久性都不会有任何损失。</span></p><h3 id="auto_id_15" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.3.3 AOF <span style="font-family:'微软雅黑', sans-serif;">持久化</span></h3><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-size:15px;"><span style="background:#00FF00;">AOF </span><span style="font-family:'微软雅黑', sans-serif;background:#00FF00;">优点</span></span></p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">使用</span><em><span>AOF </span><span><span style="font-family:'微软雅黑', sans-serif;">会让你的</span>Redis</span><span><span style="font-family:'微软雅黑', sans-serif;">更加耐久</span></span></em>: <span style="font-family:'微软雅黑', sans-serif;">你可以使用不同的</span>fsync<span style="font-family:'微软雅黑', sans-serif;">策略：无</span>fsync,<span style="font-family:'微软雅黑', sans-serif;">每秒</span>fsync,<span style="font-family:'微软雅黑', sans-serif;">每次写的时候</span>fsync.<span style="font-family:'微软雅黑', sans-serif;">使用默认的每秒</span>fsync<span style="font-family:'微软雅黑', sans-serif;">策略</span>,Redis<span style="font-family:'微软雅黑', sans-serif;">的性能依然很好</span>(fsync<span style="font-family:'微软雅黑', sans-serif;">是由后台线程进行处理的</span>,<span style="font-family:'微软雅黑', sans-serif;">主线程会尽力处理客户端请求</span>),<span style="font-family:'微软雅黑', sans-serif;">一旦出现故障，你最多丢失</span>1<span style="font-family:'微软雅黑', sans-serif;">秒的数据</span>.</p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">Redis <span style="font-family:'微软雅黑', sans-serif;">可以在</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件体积变得过大时，<em><span>自动地在后台对</span></em></span><em><span> AOF </span><span><span style="font-family:'微软雅黑', sans-serif;">进行重写</span></span></em><span style="font-family:'微软雅黑', sans-serif;">：</span> <span style="font-family:'微软雅黑', sans-serif;">重写后的新</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件包含了恢复当前数据集所需的最小命令集合。</span> <span style="font-family:'微软雅黑', sans-serif;">整个重写操作是绝对安全的，因为</span> Redis <span style="font-family:'微软雅黑', sans-serif;">在创建新</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件的过程中，会继续将命令追加到现有的</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件里面，即使重写过程中发生停机，现有的</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件也不会丢失。</span></p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">一旦新</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件创建完毕，</span>Redis <span style="font-family:'微软雅黑', sans-serif;">就会从旧</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件切换到新</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件，并开始对新</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件进行追加操作。</span></p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">AOF <span style="font-family:'微软雅黑', sans-serif;">文件有序地保存了对数据库执行的所有写入操作，</span> <span style="font-family:'微软雅黑', sans-serif;">这些写入操作以</span> Redis <span style="font-family:'微软雅黑', sans-serif;">协议的格式保存，</span> <span style="font-family:'微软雅黑', sans-serif;">因此</span> <em><span>AOF </span><span><span style="font-family:'微软雅黑', sans-serif;">文件的内容非常容易被人读懂</span></span></em><span style="font-family:'微软雅黑', sans-serif;">，</span><span style="font-family:'微软雅黑', sans-serif;">对文件进行分析（</span>parse<span style="font-family:'微软雅黑', sans-serif;">）也很轻松。</span> <span style="font-family:'微软雅黑', sans-serif;">导出（</span>export<span style="font-family:'微软雅黑', sans-serif;">）</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件也非常简单：</span> <span style="font-family:'微软雅黑', sans-serif;">举个例子，</span> <span style="font-family:'微软雅黑', sans-serif;">如果你不小心执行了</span> FLUSHALL <span style="font-family:'微软雅黑', sans-serif;">命令，</span> <span style="font-family:'微软雅黑', sans-serif;">但只要</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件未被重写，</span> <span style="font-family:'微软雅黑', sans-serif;">那么只要停止服务器，</span> <span style="font-family:'微软雅黑', sans-serif;">移除</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件末尾的</span> FLUSHALL <span style="font-family:'微软雅黑', sans-serif;">命令，</span> <span style="font-family:'微软雅黑', sans-serif;">并重启</span> Redis <span style="font-family:'微软雅黑', sans-serif;">，</span> <span style="font-family:'微软雅黑', sans-serif;">就可以将数据集恢复到</span> FLUSHALL <span style="font-family:'微软雅黑', sans-serif;">执行之前的状态。</span></p><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-size:15px;"><span style="background:#00FF00;">AOF </span><span style="font-family:'微软雅黑', sans-serif;background:#00FF00;">缺点</span></span></p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">对于相同的数据集来说，</span><em><span>AOF </span><span><span style="font-family:'微软雅黑', sans-serif;">文件的体积通常要大于</span> RDB </span><span><span style="font-family:'微软雅黑', sans-serif;">文件的体积</span></span></em><span style="font-family:'微软雅黑', sans-serif;">。根据所使用的</span> fsync <span style="font-family:'微软雅黑', sans-serif;">策略，</span>AOF <span style="font-family:'微软雅黑', sans-serif;">的速度可能会慢于</span> RDB <span style="font-family:'微软雅黑', sans-serif;">。</span></p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">在一般情况下，</span> <span style="font-family:'微软雅黑', sans-serif;">每秒</span> fsync <span style="font-family:'微软雅黑', sans-serif;">的性能依然非常高，</span> <span style="font-family:'微软雅黑', sans-serif;">而<em><span>关闭</span></em></span><em><span> fsync </span><span><span style="font-family:'微软雅黑', sans-serif;">可以让</span> AOF </span><span><span style="font-family:'微软雅黑', sans-serif;">的速度和</span> RDB </span><span><span style="font-family:'微软雅黑', sans-serif;">一样快</span></span></em><span style="font-family:'微软雅黑', sans-serif;">，</span> <span style="font-family:'微软雅黑', sans-serif;">即使在高负荷之下也是如此。</span> <span style="font-family:'微软雅黑', sans-serif;">不过在处理巨大的写入载入时，</span>RDB <span style="font-family:'微软雅黑', sans-serif;">可以提供更有保证的最大延迟时间（</span>latency<span style="font-family:'微软雅黑', sans-serif;">）。</span></p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">AOF <span style="font-family:'微软雅黑', sans-serif;">在过去曾经发生过这样的</span> bug <span style="font-family:'微软雅黑', sans-serif;">：因为个别命令的原因，导致</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件在重新载入时，无法将数据集恢复成保存时的原样。</span> <span style="font-family:'微软雅黑', sans-serif;">（举个例子，阻塞命令</span> BRPOPLPUSH <span style="font-family:'微软雅黑', sans-serif;">就曾经引起过这样的</span> bug <span style="font-family:'微软雅黑', sans-serif;">。）</span> <span style="font-family:'微软雅黑', sans-serif;">测试套件里为这种情况添加了测试：</span> <span style="font-family:'微软雅黑', sans-serif;">它们会自动生成随机的、复杂的数据集，</span> <span style="font-family:'微软雅黑', sans-serif;">并通过重新载入这些数据来确保一切正常。</span></p><p style="margin-left:21pt;text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">虽然这种</span> bug <span style="font-family:'微软雅黑', sans-serif;">在</span> AOF <span style="font-family:'微软雅黑', sans-serif;">文件中并不常见，</span> <span style="font-family:'微软雅黑', sans-serif;">但是对比来说，</span> RDB <span style="font-family:'微软雅黑', sans-serif;">几乎是不可能出现这种</span> bug <span style="font-family:'微软雅黑', sans-serif;">的。</span></p><h3 id="auto_id_16" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.3.4 <span style="font-family:'微软雅黑', sans-serif;">如何选择使用哪种持久化方式</span></h3><p style="text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">一般来说，</span> <span style="font-family:'微软雅黑', sans-serif;">如果想达到足以媲美</span> PostgreSQL <span style="font-family:'微软雅黑', sans-serif;">的数据安全性，</span> <span style="font-family:'微软雅黑', sans-serif;">你应该同时使用两种持久化功能。</span></p><p style="text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">如果你非常关心你的数据，</span> <span style="font-family:'微软雅黑', sans-serif;">但仍然可以承受数分钟以内的数据丢失，</span> <span style="font-family:'微软雅黑', sans-serif;">那么你可以只使用</span> RDB <span style="font-family:'微软雅黑', sans-serif;">持久化。</span></p><p style="text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">有很多用户都只使用</span> AOF <span style="font-family:'微软雅黑', sans-serif;">持久化，</span> <span style="font-family:'微软雅黑', sans-serif;">但我们并不推荐这种方式：</span> <span style="font-family:'微软雅黑', sans-serif;">因为定时生成</span> RDB <span style="font-family:'微软雅黑', sans-serif;">快照（</span>snapshot<span style="font-family:'微软雅黑', sans-serif;">）非常便于进行数据库备份，</span> <span style="font-family:'微软雅黑', sans-serif;">并且</span> RDB <span style="font-family:'微软雅黑', sans-serif;">恢复数据集的速度也要比</span> AOF <span style="font-family:'微软雅黑', sans-serif;">恢复的速度要快，</span> <span style="font-family:'微软雅黑', sans-serif;">除此之外，</span> <span style="font-family:'微软雅黑', sans-serif;">使用</span> RDB <span style="font-family:'微软雅黑', sans-serif;">还可以避免之前提到的</span> AOF <span style="font-family:'微软雅黑', sans-serif;">程序的</span> bug <span style="font-family:'微软雅黑', sans-serif;">。</span></p><div style="color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;font-size:14px;border:2pt solid;background:rgb(242,242,242);"><p style="text-indent:0em;font-size:14px;">Note: <span style="font-family:'微软雅黑', sans-serif;">因为以上提到的种种原因，</span> <span style="font-family:'微软雅黑', sans-serif;">未来</span>redis<span style="font-family:'微软雅黑', sans-serif;">可能会将</span> AOF <span style="font-family:'微软雅黑', sans-serif;">和</span> RDB <span style="font-family:'微软雅黑', sans-serif;">整合成单个持久化模型（这是一个长期计划）。</span></p></div><h3 id="auto_id_17" style="font-size:16px;line-height:1.5;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">1.3.5 <span style="font-family:'微软雅黑', sans-serif;">快照实现持久化</span></h3><p style="text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">在默认情况下，</span> Redis <span style="font-family:'微软雅黑', sans-serif;">将数据库快照保存在名字为</span> dump.rdb<span style="font-family:'微软雅黑', sans-serif;">的二进制文件中。你可以对</span> Redis <span style="font-family:'微软雅黑', sans-serif;">进行设置，</span> <span style="font-family:'微软雅黑', sans-serif;">让它在“</span> N <span style="font-family:'微软雅黑', sans-serif;">秒内数据集至少有</span> M <span style="font-family:'微软雅黑', sans-serif;">个改动”这一条件被满足时，</span> <span style="font-family:'微软雅黑', sans-serif;">自动保存一次数据集。</span></p><p style="margin-left:7.1pt;text-indent:13.9pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">你也可以通过调用</span> SAVE<span style="font-family:'微软雅黑', sans-serif;">或者</span> BGSAVE <span style="font-family:'微软雅黑', sans-serif;">，</span> <span style="font-family:'微软雅黑', sans-serif;">手动让</span> Redis <span style="font-family:'微软雅黑', sans-serif;">进行数据集保存操作。</span></p><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">   <span style="font-family:'微软雅黑', sans-serif;">比如说，</span> <span style="font-family:'微软雅黑', sans-serif;">以下设置会让</span> Redis <span style="font-family:'微软雅黑', sans-serif;">在满足“</span> 60 <span style="font-family:'微软雅黑', sans-serif;">秒内有至少有</span> 1000 <span style="font-family:'微软雅黑', sans-serif;">个键被改动”这一条件时，</span> <span style="font-family:'微软雅黑', sans-serif;">自动保存一次数据集</span>: <span class="cnblogs_code" style="background-color:rgb(239,239,239);border:0px solid rgb(204,204,204);vertical-align:middle;font-family:'Courier New';font-size:12px;">save 60 1000</span> </p><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);">   <span style="font-family:'微软雅黑', sans-serif;">这种<span><span style="background:#00FF00;">持久化方式被称为快照</span></span></span><span><span style="background:#00FF00;"> snapshotting</span></span>.</p><p style="font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'微软雅黑', sans-serif;">当</span> Redis <span style="font-family:'微软雅黑', sans-serif;">需要保存</span> dump.rdb <span style="font-family:'微软雅黑', sans-serif;">文件时，</span> <span style="font-family:'微软雅黑', sans-serif;">服务器执行以下操作</span>:</p><p style="text-indent:21pt;font-size:14px;color:rgb(0,0,0);font-family:Helvetica, Verdana, Arial, sans-serif;background-color:rgb(255,255,255);"><span style="font-family:'Segoe UI Emoji', sans-serif;"></span></p>            </div>
+                </div>
+				<div class="hide-article-box text-center">
+			<a class="btn btn-red-hollow" id="btn-readmore" data-track-view='{"mod":"popu_376","con":",https://blog.csdn.net/xiaochendefendoushi/article/details/81051729,"}' data-track-click='{"mod":"popu_376","con":",https://blog.csdn.net/xiaochendefendoushi/article/details/81051729,"}'>阅读更多</a>
+		</div>
+        	</article>
+	
+		<div class="article-bar-bottom">
+						<div class="tags-box artic-tag-box">
+			<span class="label">文章标签：</span>
+						<a class="tag-link" href="http://so.csdn.net/so/search/s.do?q=redis&t=blog" target="_blank">redis						<a class="tag-link" href="http://so.csdn.net/so/search/s.do?q=python&t=blog" target="_blank">python						</a>
+		</div>
+										<div class="tags-box hot-word">
+			<span class="label">相关热词：</span>
+						<a class="tag-link" href="https://blog.csdn.net/liangdsh/article/details/79886267" target="_blank">
+			每隔一小时			</a>
+						<a class="tag-link" href="https://blog.csdn.net/xiaxiangyun/article/details/78874102" target="_blank">
+			js一小时			</a>
+						<a class="tag-link" href="https://blog.csdn.net/it_small_farmer/article/details/41910491" target="_blank">
+			php一小时			</a>
+						<a class="tag-link" href="https://blog.csdn.net/wwwang89123/article/details/38730453" target="_blank">
+			ios开发一小时			</a>
+						<a class="tag-link" href="https://blog.csdn.net/moy37rqw1jarn33bgzk/article/details/80076301" target="_blank">
+			实验一小时			</a>
+					</div>
+			</div>
+	
+	<!-- !empty($pre_next_article[0]) -->
+			<div class="related-article related-article-prev text-truncate">
+		<a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81051662">
+			<span>上一篇</span>python 中 mysql 的使用		</a>
+	</div>
+				<div class="related-article related-article-next text-truncate">
+		<a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81051755">
+			<span>下一篇</span>超详细Redis数据库入门教程		</a>
+	</div>
+	</div>
+<script>
+    $(".MathJax").remove();
+</script>
+
+<script type="text/javascript" src="https://static-blog.csdn.net/mdeditor/public/res/bower-libs/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+			"HTML-CSS": {
+					linebreaks: { automatic: true, width: "94%container" },
+					imageFont: null
+			},
+			tex2jax: {
+				preview: "none"
+			},
+			mml2jax: {
+				preview: 'none'
+			}
+	});
+</script>
+<script>
+	(function(){
+		var btnReadmore = $("#btn-readmore");
+		if(btnReadmore.length>0){
+			var winH = $(window).height();
+			var articleBox = $("div.article_content");
+			var artH = articleBox.height();
+			if(artH > winH*2){
+				articleBox.css({
+					'height':winH*2+'px',
+					'overflow':'hidden'
+				})
+				btnReadmore.click(function(){
+					articleBox.removeAttr("style");
+					$(this).parent().remove();
+				})
+			}else{
+				btnReadmore.parent().remove();
+			}
+		}
+	})()
+</script>        <div data-track-view='{"mod":"popu_625","con": ",https://blog.csdn.net/xiaochendefendoushi/article/details/81051729,from_360"}' style="margin-top: 8px;padding: 20px;background-color: #fff;overflow: hidden;" id="adt0"></div>
+            <script>
+                var adWidth = $("div.blog-content-box").outerWidth() - 40;
+                NEWS_FEED({
+                    w: adWidth,
+                    h : 130,
+                    showid : "s02a31",
+                    placeholderId: "adt0",
+                    inject : "define",
+                    define : {
+                    imagePosition : "left",
+                    imageBorderRadius : 0,
+                    imageWidth: 231,
+                    imageHeight: 130,
+                    imageFill : "clip",
+                    displayImage : true,
+                    displayTitle : true,
+                    titleFontSize: 20,
+                    titleFontColor: "#333",
+                    titleFontFamily : "Microsoft Yahei",
+                    titleFontWeight: "bold",
+                    titlePaddingTop : 0,
+                    titlePaddingRight : 0,
+                    titlePaddingBottom : 10,
+                    titlePaddingLeft : 16,
+                    displayDesc : true,
+                    descFontSize: 14,
+                    descFontColor: "#6b6b6b",
+                    descFontFamily : "Microsoft Yahei",
+                    paddingTop : 0,
+                    paddingRight : 0,
+                    paddingBottom : 0,
+                    paddingLeft : 0,
+                    backgroundColor: "#fff",
+                    hoverColor: "#ca0c16"
+                    }
+                })
+            </script>        <a id="commentBox"></a>
+<div class="comment-box">
+	  	<div class="unlogin-box text-center">
+		想对作者说点什么？
+		<!-- $curl 当前地址 -->
+		<a href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/xiaochendefendoushi/article/details/81051729#commentBox" class="btn btn-sm btn-red">我来说一句</a>
+	</div>
+			<div class="comment-list-container">
+		<a id="comments"></a>
+		<div class="comment-list-box">
+		</div>
+		<div id="commentPage" class="pagination-box d-none"></div>
+		<div class="opt-box text-center">
+			<button class="btn btn-sm btn-link-blue" id="btnMoreComment"></button>
+		</div>
+	</div>
+</div>        <div class="recommend-box">
+            		<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/zrl0506/article/details/56830497,BlogCommendClickRateRank_2"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/zrl0506/article/details/56830497,BlogCommendClickRateRank_2"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/zrl0506/article/details/56830497" target="_blank">
+				10分钟<em>学会</em>缓存<em>redis</em>			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/zrl0506/article/details/56830497" target="_blank" >
+				安装运行redis服务器，在java项目中引入redis架包或在php中安装扩展，使用set数据（Stringhash list set等数据类型）、get数据操作缓存数据。其实redis就是这么简单...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/zrl0506" title="zrl0506" target="_blank">
+					<img src="https://avatar.csdn.net/E/C/A/3_zrl0506.jpg" alt="zrl0506" class="avatar-pic">
+					<span class="name">zrl0506</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2017-02-24 09:44:00</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：344</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/u012658346/article/details/51366269,BlogCommendClickRateRank_4"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/u012658346/article/details/51366269,BlogCommendClickRateRank_4"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/u012658346/article/details/51366269" target="_blank">
+				<em>redis</em>学习笔记（15）---<em>redis</em><em>数据库</em>			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/u012658346/article/details/51366269" target="_blank" >
+				创建数据库　　在redis的server端，维护着多个数据库（默认为16个）。 
+　　所有的数据库以数组的形式保存在redisServer结构中 struct redisServer {
+    .....			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/u012658346" title="u012658346" target="_blank">
+					<img src="https://avatar.csdn.net/B/A/9/3_u012658346.jpg" alt="u012658346" class="avatar-pic">
+					<span class="name">u012658346</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2016-05-10 20:25:06</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：2489</span>
+			</p>
+		</div>
+	</div>
+									<div class="recommend-item-box recommend-ad-box" id="ad1"></div>
+				<script>
+				var width = $("div.recommend-box").outerWidth() - 48;
+					NEWS_FEED({
+						w: width,
+						h : 90,
+						showid : 'GNKXx7',
+						placeholderId: "ad1",
+						inject : 'define',
+						define : {
+							imagePosition : 'left',
+							imageBorderRadius : 0,
+							imageWidth: 120,
+							imageHeight: 90,
+							imageFill : 'clip',
+							displayImage : true,
+							displayTitle : true,
+							titleFontSize: 20,
+							titleFontColor: '#333',
+							titleFontFamily : 'Microsoft Yahei',
+							titleFontWeight: 'bold',
+							titlePaddingTop : 0,
+							titlePaddingRight : 0,
+							titlePaddingBottom : 10,
+							titlePaddingLeft : 16,
+							displayDesc : true,
+							descFontSize: 14,
+							descPaddingLeft: 14,
+							descFontColor: '#6b6b6b',
+							descFontFamily : 'Microsoft Yahei',
+							paddingTop : 0,
+							paddingRight : 0,
+							paddingBottom : 0,
+							paddingLeft : 0,
+							backgroundColor: '#fff',
+							hoverColor: '#ca0c16'
+						}
+					})
+				</script>
+
+			
+				<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/qq_37461349/article/details/79663832,BlogCommendClickRateRank_32"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/qq_37461349/article/details/79663832,BlogCommendClickRateRank_32"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/qq_37461349/article/details/79663832" target="_blank">
+				<em>redis</em>篇,<em>学会</em>使用<em>redis</em>工具			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/qq_37461349/article/details/79663832" target="_blank" >
+				https://blog.csdn.net/qq_26525215/article/details/72510794			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/qq_37461349" title="qq_37461349" target="_blank">
+					<img src="https://avatar.csdn.net/C/B/B/3_qq_37461349.jpg" alt="qq_37461349" class="avatar-pic">
+					<span class="name">qq_37461349</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2018-03-23 10:20:22</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：151</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/huanwanxi/article/details/7451200,BlogCommendClickRateRank_9"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/huanwanxi/article/details/7451200,BlogCommendClickRateRank_9"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/huanwanxi/article/details/7451200" target="_blank">
+				摘自 <em>一小时</em><em>学会</em>python			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/huanwanxi/article/details/7451200" target="_blank" >
+				为什么使用Python
+    假设我们有这么一项任务:简单测试局域网中的电脑是否连通.这些电脑的ip范围从192.168.0.101到192.168.0.200.  
+
+    思路:用she...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/huanwanxi" title="huanwanxi" target="_blank">
+					<img src="https://avatar.csdn.net/D/E/9/3_huanwanxi.jpg" alt="huanwanxi" class="avatar-pic">
+					<span class="name">huanwanxi</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2012-04-11 20:52:32</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：314</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/sdksdk0/article/details/52332296,BlogCommendClickRateRank_20"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/sdksdk0/article/details/52332296,BlogCommendClickRateRank_20"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/sdksdk0/article/details/52332296" target="_blank">
+				<em>一小时</em>入门PHP			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/sdksdk0/article/details/52332296" target="_blank" >
+				PHP是能让你生成动态网页的工具之一。PHP网页文件被当作一般HTML网页文件来处理并且在编辑时你可以用编辑HTML的常规方法编写PHP。最近在折腾那个安卓扫码登录的功能，然后网页端是用php的做了，...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/sdksdk0" title="sdksdk0" target="_blank">
+					<img src="https://avatar.csdn.net/B/4/C/3_sdksdk0.jpg" alt="sdksdk0" class="avatar-pic">
+					<span class="name">sdksdk0</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2016-08-26 22:38:50</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：3424</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/Xiejingfa/article/details/51321282,BlogCommendClickRateRank_23"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/Xiejingfa/article/details/51321282,BlogCommendClickRateRank_23"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/Xiejingfa/article/details/51321282" target="_blank">
+				【<em>Redis</em>源码剖析】  -  <em>Redis</em>之<em>数据库</em><em>redis</em>Db			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/Xiejingfa/article/details/51321282" target="_blank" >
+				原创作品，转载请标明：http://blog.csdn.net/xiejingfa/article/details/51321282
+
+Redis源码剖析系列文章汇总：传送门
+
+今天，我们来讨论两点内...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/Xiejingfa" title="Xiejingfa" target="_blank">
+					<img src="https://avatar.csdn.net/5/2/C/3_xiejingfa.jpg" alt="Xiejingfa" class="avatar-pic">
+					<span class="name">Xiejingfa</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2016-05-05 21:38:05</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：11179</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box recommend-ad-box" id="a_d_feed_0"></div>
+			<script>
+				var width = $("div.recommend-box").outerWidth() - 48;
+				NEWS_FEED({
+					w: width,
+					h: 90,
+					showid: 'Afihld',
+					placeholderId: 'a_d_feed_0',
+					inject: 'define',
+					define: {
+						imagePosition: 'left',
+						imageBorderRadius: 0,
+						imageWidth: 120,
+						imageHeight: 90,
+						imageFill: 'clip',
+						displayImage: true,
+						displayTitle: true,
+						titleFontSize: 20,
+						titleFontColor: '#333',
+						titleFontFamily: 'Microsoft Yahei',
+						titleFontWeight: 'bold',
+						titlePaddingTop: 0,
+						titlePaddingRight: 0,
+						titlePaddingBottom: 10,
+						titlePaddingLeft: 16,
+						displayDesc: true,
+						descFontSize: 14,
+						descPaddingLeft: 14,
+						descFontColor: '#6b6b6b',
+						descFontFamily: 'Microsoft Yahei',
+						paddingTop: 0,
+						paddingRight: 0,
+						paddingBottom: 0,
+						paddingLeft: 0,
+						backgroundColor: '#fff',
+						hoverColor: '#ca0c16'
+					}
+				})
+			</script>
+			<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/zhangdongxu999/article/details/70820313,BlogCommendClickRateRank_27"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/zhangdongxu999/article/details/70820313,BlogCommendClickRateRank_27"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/zhangdongxu999/article/details/70820313" target="_blank">
+				<em>redis</em>持久化详解			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/zhangdongxu999/article/details/70820313" target="_blank" >
+				redis持久化详解
+redis是一个支持持久化的内存型数据库，由于是在内存中，即使有主从，数据冗余备份，也难保数据丢失，
+redis持久化就是解决这个问题。
+redis持久化，是通过把内存里的...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/zhangdongxu999" title="zhangdongxu999" target="_blank">
+					<img src="https://avatar.csdn.net/8/7/8/3_zhangdongxu999.jpg" alt="zhangdongxu999" class="avatar-pic">
+					<span class="name">zhangdongxu999</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2017-04-26 18:27:09</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：170</span>
+			</p>
+		</div>
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/gnf_cc/article/details/57074549,BlogCommendClickRateRank_0"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/gnf_cc/article/details/57074549,BlogCommendClickRateRank_0"}'>
+		<h4 class="text-truncate">
+			<a href="https://blog.csdn.net/gnf_cc/article/details/57074549" target="_blank">
+				<em>一小时</em><em>学会</em>SQL			</a>
+		</h4>
+		<p class="content">
+			<a href="https://blog.csdn.net/gnf_cc/article/details/57074549" target="_blank" >
+				本篇目的是为了对数据库操作不熟悉的同学，在较短时间内掌握数据库的基本操作，增删改查等操作，适合对数据库有一定了解的同学概述有关数据库概述，数据库管理系统的基本概念介绍就不重复了，我们只需要知道 SQL...			</a>
+		</p>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/gnf_cc" title="gnf_cc" target="_blank">
+					<img src="https://avatar.csdn.net/2/4/A/3_gnf_cc.jpg" alt="gnf_cc" class="avatar-pic">
+					<span class="name">gnf_cc</span>
+				</a>
+			</p>
+			<p>
+				<span class="date">2017-02-27 08:58:02</span>
+			</p>
+			<p>
+				<span class="read-num">阅读数：596</span>
+			</p>
+		</div>
+	</div>
+						<div class="recommend-item-box recommend-download-box clearfix" data-track-view='{"mod":"popu_614","con":",https://download.csdn.net/download/yeeloong/1215736,BlogCommendClickRateRank_1"}' data-track-click='{"mod":"popu_614","con":",https://download.csdn.net/download/yeeloong/1215736,BlogCommendClickRateRank_1"}'>
+			<div class="content float-left">
+				<h4 class="text-truncate">
+					<a href="https://download.csdn.net/download/yeeloong/1215736" target="_blank">
+						Sams - 一天<em>一小时</em><em>学会</em>C++ (第六版)					</a>
+				</h4>
+				<p>
+					<span class="data">2009年04月16日 </span>
+					<span class="size">2.28MB</span>
+					<span class="type">下载</span>
+				</p>
+			</div>
+			<div class="img-box float-right">
+				<a href="https://download.csdn.net/download/yeeloong/1215736" target="_blank" strategy="BlogCommendClickRateRank_1">
+					<img src="https://csdnimg.cn/release/download/old_static/images/minetype/zip.svg" alt="">
+				</a>
+			</div>
+		</div>
+						<div class="recommend-item-box recommend-download-box clearfix" data-track-view='{"mod":"popu_614","con":",https://download.csdn.net/download/wbnlschauvet/9772835,BlogCommendClickRateRank_3"}' data-track-click='{"mod":"popu_614","con":",https://download.csdn.net/download/wbnlschauvet/9772835,BlogCommendClickRateRank_3"}'>
+			<div class="content float-left">
+				<h4 class="text-truncate">
+					<a href="https://download.csdn.net/download/wbnlschauvet/9772835" target="_blank">
+						<em>一小时</em><em>学会</em>abaqus脚本					</a>
+				</h4>
+				<p>
+					<span class="data">2017年03月07日 </span>
+					<span class="size">942KB</span>
+					<span class="type">下载</span>
+				</p>
+			</div>
+			<div class="img-box float-right">
+				<a href="https://download.csdn.net/download/wbnlschauvet/9772835" target="_blank" strategy="BlogCommendClickRateRank_3">
+					<img src="https://csdnimg.cn/release/download/old_static/images/minetype/pdf.svg" alt="">
+				</a>
+			</div>
+		</div>
+			
+            <div class="recommend-loading-box">
+                <img src='https://csdnimg.cn/release/phoenix/images/feedLoading.gif'>
+            </div>
+            <div class="recommend-end-box">
+                <p class="text-center">没有更多推荐了，<a href="https://blog.csdn.net/" class="c-blue c-blue-hover c-blue-focus">返回首页</a></p>
+            </div>
+        </div>
+    </main>
+    <aside>
+		    <div id="asideProfile" class="aside-box">
+    <h3 class="aside-title">个人资料</h3>
+    <div class="profile-intro d-flex">
+        <div class="avatar-box d-flex justify-content-center flex-column">
+            <a href="https://blog.csdn.net/xiaochendefendoushi">
+                <img src="https://avatar.csdn.net/F/2/C/3_xiaochendefendoushi.jpg" class="avatar_pic">
+            </a>
+        </div>
+        <div class="user-info d-flex justify-content-center flex-column">
+            <p class="name csdn-tracking-statistics tracking-click" data-mod="popu_379">
+                <a href="https://blog.csdn.net/xiaochendefendoushi" target="_blank" class="text-truncate" id="uid">xiaochendefendoushi</a>
+            </p>
+                    </div>
+                <div class="opt-box d-flex justify-content-center flex-column">
+            <span  class="csdn-tracking-statistics tracking-click" data-mod="popu_379">
+                                <a class="btn btn-sm btn-red-hollow" href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/xiaochendefendoushi/article/details/81051729" target="_self">关注</a>
+                            </span>
+                    </div>
+            </div>
+    <div class="data-info d-flex item-tiling">
+                <dl class="text-center" title="68">
+                        <dt><a href="https://blog.csdn.net/xiaochendefendoushi?t=1">原创</a></dt>
+            <dd><a href="https://blog.csdn.net/xiaochendefendoushi?t=1"><span class="count">68</span></a></dd>
+                    </dl>
+        <dl class="text-center" title="6">
+            <dt>粉丝</dt>
+            <dd><span class="count" id="fan">6</span></dd>
+        </dl>
+        <dl class="text-center" title="2">
+            <dt>喜欢</dt>
+            <dd><span class="count">2</span></dd>
+        </dl>
+        <dl class="text-center" title="1">
+            <dt>评论</dt>
+            <dd><span class="count">1</span></dd>
+        </dl>
+    </div>
+    <div class="grade-box clearfix">
+        <dl>
+            <dt>等级：</dt>
+            <dd>
+                <a href="https://blog.csdn.net/home/help.html#level" title="3级,点击查看等级说明" target="_blank">
+                    <svg class="icon icon-level" aria-hidden="true">
+                        <use xlink:href="#csdnc-bloglevel-3"></use>
+                    </svg>
+                </a>
+            </dd>
+        </dl>
+        <dl>
+            <dt>访问：</dt>
+            <dd title="3097">
+                3097            </dd>
+        </dl>
+        <dl>
+            <dt>积分：</dt>
+            <dd title="792">
+                792            </dd>
+        </dl>
+        <dl title="69431">
+            <dt>排名：</dt>
+            <dd>6万+</dd>
+        </dl>
+    </div>
+        <div class="badge-box d-flex">
+        <span>勋章：</span>
+                <a class="icon-badge" title="专栏达人">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#csdnc-m-columns"></use>
+            </svg>
+            <div class="icon-arrow"></div>
+            <div class="grade-detail-box item1">
+                <div class="pos-box">
+                    <div class="left-box d-flex justify-content-center align-items-center flex-column">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#csdnc-m-columns"></use>
+                        </svg>
+                        <p>专栏达人</p>
+                    </div>
+                    <div class="right-box d-flex justify-content-center align-items-center">
+                        授予成功创建个人博客专栏的用户。专栏中添加五篇以上博文即可点亮！撰写博客专栏浓缩技术精华，专栏达人就是你！
+                    </div>
+                </div>
+            </div> 
+        </a>  
+                        <a class="icon-badge" title="持之以恒">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#csdnc-m-lasting"></use>
+            </svg>
+            <div class="icon-arrow"></div>
+            <div class="grade-detail-box item2">
+                <div class="pos-box">
+                    <div class="left-box d-flex justify-content-center align-items-center flex-column">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#csdnc-m-lasting"></use>
+                        </svg>
+                        <p>持之以恒</p>
+                    </div>
+                    <div class="right-box d-flex justify-content-center align-items-center">
+                        授予每个自然月内发布4篇或4篇以上原创或翻译IT博文的用户。不积跬步无以至千里，不积小流无以成江海，程序人生的精彩需要坚持不懈地积累！
+                    </div>
+                </div>
+            </div>
+        </a>
+                            </div>
+    </div>		    <div class="csdn-tracking-statistics mb8 box-shadow" data-pid="blog" data-mod="popu_4" style="height:250px;">
+    <div class="aside-content text-center" id="cpro_u2734133">
+              <script type="text/javascript" src="//cee1.iteye.com/lgyyovfyh.js"></script>
+          </div>
+</div>
+		    <div id="asideNewArticle" class="aside-box">
+    <h3 class="aside-title">最新文章</h3>
+    <div class="aside-content">
+        <ul class="inf_list clearfix csdn-tracking-statistics tracking-click" data-mod="popu_382">
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81067470" target="_blank">Git 多人协作开发的过程</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81063205" target="_blank">使用Git进行多人协作开发</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81058279" target="_blank">Django-分页功能（第三方库）</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81056870" target="_blank">Django REST framework教程一：序列化</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/details/81056348" target="_blank">Redis系列-存储篇set主要操作函数小结</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+		    <div id="asideColumn" class="aside-box">
+    <h3 class="aside-title">博主专栏</h3>
+    <div class="aside-content">
+        <ul class="column-box csdn-tracking-statistics tracking-click" data-mod="popu_520" >
+                            <li class="clearfix">
+                    <div class="img-box float-left">
+                        <a class="d-flex align-items-center" href="https://blog.csdn.net/column/details/24740.html">
+                            <img src="//img-blog.csdn.net/20180716164155988?imageView2/5/w/120/h/120" alt="">
+                        </a>
+                    </div>
+                    <div class="info">
+                        <p class="title"><a href="https://blog.csdn.net/column/details/24740.html">程序人生</a></p>
+                        <div class="data">阅读量：<span>205</span><span class="count">2 篇</span></div>
+                    </div>
+                </li>
+                            <li class="clearfix">
+                    <div class="img-box float-left">
+                        <a class="d-flex align-items-center" href="https://blog.csdn.net/column/details/24795.html">
+                            <img src="//img-blog.csdn.net/20180716164618553?imageView2/5/w/120/h/120" alt="">
+                        </a>
+                    </div>
+                    <div class="info">
+                        <p class="title"><a href="https://blog.csdn.net/column/details/24795.html">人工智能与大数据</a></p>
+                        <div class="data">阅读量：<span>5561</span><span class="count">3 篇</span></div>
+                    </div>
+                </li>
+                            <li class="clearfix">
+                    <div class="img-box float-left">
+                        <a class="d-flex align-items-center" href="https://blog.csdn.net/column/details/24887.html">
+                            <img src="//img-blog.csdn.net/20180716164935242?imageView2/5/w/120/h/120" alt="">
+                        </a>
+                    </div>
+                    <div class="info">
+                        <p class="title"><a href="https://blog.csdn.net/column/details/24887.html">python 阶段性自我总结</a></p>
+                        <div class="data">阅读量：<span>22</span><span class="count">5 篇</span></div>
+                    </div>
+                </li>
+                    </ul>
+    </div>
+    </div>
+		    		    <div id="asideArchive" class="aside-box">
+    <h3 class="aside-title">归档</h3>
+    <div class="aside-content">
+        <ul class="archive-list">
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/month/2018/07">
+                    2018年7月                    <span class="count float-right">108篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/month/2018/06">
+                    2018年6月                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/xiaochendefendoushi/article/month/2018/04">
+                    2018年4月                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                    </ul>
+    </div>
+    </div>
+		    <div id="asideNewComments" class="aside-box">
+    <h3 class="aside-title">最新评论</h3>
+    <div class="aside-content">
+        <ul class="newcomment-list">
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/xiaochendefendoushi/article/details/81051655#comments">一个小时学会MySQL数据库</a>
+                <p class="comment">
+                    <a href="https://my.csdn.net/qq_40802742" class="user-name" target="_blank">qq_40802742</a>：呵呵呵                </p>
+            </li>
+                    </ul>
+    </div>
+</div>
+		<div id="asideFooter">
+			
+		<div class="aside-box">
+						<script type="text/javascript" src="//cee1.iteye.com/mhzzpwgzj.js"></script>
+					</div>
+				<div class="aside-box">
+			<div class="persion_article">
+			</div>
+		</div>
+	</div>
+</aside>
+<script src="https://csdnimg.cn/pubfooter/js/publib_footer-1.0.3.js" data-isfootertrack="false" type="text/javascript"></script>
+<script>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).remove();
+	})
+</script>
+</div>
+<div class="mask-dark"></div>
+<div class="pulllog-box" style="display: block;">
+	<div class="pulllog clearfix">
+		<span class="text float-left">
+			<!-- 广告位：PC-博客内页底通 文字链位置 -->
+			<script>
+			(function() {
+				var s = "_" + Math.random().toString(36).slice(2);
+				document.write('<div id="baidufooter_0001"></div>');
+				(window.slotbydup=window.slotbydup || []).push({
+					id: '5851901',
+					container: 'baidufooter_0001',
+					size: '520,40',
+					display: 'inlay-fix'
+				});
+			})();
+			</script>
+			<script src="https://dup.baidustatic.com/js/os.js"></script>
+			<style>
+				#baidufooter_0001{
+					display: none !important;
+				}
+			</style>
+		</span>
+		<div class="pulllog-btn float-right clearfix">
+            <button class="pulllog-login float-left csdn-tracking-statistics tracking-click" data-mod="popu_557">
+                登录
+            </button>
+            <div class="pulllog-sigin float-left csdn-tracking-statistics tracking-click" data-mod="popu_558">
+                <a href="https://passport.csdn.net/account/mobileregister" target="_blank">注册</a>
+            </div>
+            <button class="btn-close">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#csdnc-times"></use>
+                </svg>
+            </button>
+		</div>
+	</div>
+</div>
+<div id="loginWrap" style="display:none"></div>
+<div class="tool-box">
+	<ul class="meau-list">
+		<li>
+			<button class="btn-like " title="点赞">
+				<svg class="icon active" aria-hidden="true">
+					<use xlink:href="#csdnc-thumbsup-ok"></use>
+				</svg><svg class="icon no-active" aria-hidden="true">
+					<use xlink:href="#csdnc-thumbsup"></use>
+				</svg>
+				<p>0</p>
+			</button>
+		</li>
+		<li>
+			<a class="btn-comments" title="写评论" href="#commentBox">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-comments"></use>
+				</svg><br>写评论			</a>
+		</li>
+		<li class="toc-container-box" id="liTocBox">
+			<button class="btn-toc" title="目录">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-contents"></use>
+				</svg><br>目录
+			</button>
+			<div class="toc-container">
+				<div class="pos-box">
+					<div class="icon-arrow"></div>
+					<div class="scroll-box">
+						<div class="toc-box"></div>
+					</div>
+				</div>
+				<div class="opt-box">
+					<button class="btn-opt prev nomore" title="向上">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#csdnc-chevronup"></use>
+						</svg>
+					</button>
+					<button class="btn-opt next">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#csdnc-chevrondown"></use>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</li>
+		<li>
+			<button class="btn-bookmark" title="收藏">
+				<svg class="icon active" aria-hidden="true">
+					<use xlink:href="#csdnc-bookmark-ok"></use>
+				</svg><svg class="icon no-active" aria-hidden="true">
+					<use xlink:href="#csdnc-bookmark"></use>
+				</svg><br>收藏
+			</button>
+		</li>
+				<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_weixin" data-cmd="weixin" title="微信分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-wechat"></use>
+				</svg><br>微信
+			</a>
+		</li>
+		<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_tsina" data-cmd="tsina" title="微博分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-weibo"></use>
+				</svg><br>微博
+			</a>
+		</li>
+		<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_qzone" data-cmd="qzone" title="QQ分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-qq"></use>
+				</svg><br>QQ
+			</a>
+		</li>
+	</ul>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'https://csdnimg.cn/static/api/js/share.js?v=89860594'];</script>
+<script>
+    var recommendCount = 10;
+    recommendCount = recommendCount > 1 ? (recommendCount + (recommendCount>6 ? 2 : 1)) : recommendCount;
+    var articleTit = "一小时学会 Redis 数据库";
+    var ChannelId = 6;
+    var articleId = "81051729";
+    var commentscount = 0;
+    var islock = false;
+    var curentUrl = "https://blog.csdn.net/xiaochendefendoushi/article/details/81051729";
+    var myUrl = "https://my.csdn.net/";
+    //1禁止评论，2正常
+    var commentAuth = 2;
+    //百度搜索
+    var baiduKey = "";
+    var needInsertBaidu = true;
+    // 代码段样式
+    var codeStyle = 'dracula';
+    var highlight = ["\u4e00\u5c0f\u65f6","\u5b66\u4f1a","redis","\u6570\u636e\u5e93"];//高亮数组
+</script>
+<script src="https://csdnimg.cn/public/sandalstrap/1.3/js/sandalstrap.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/vendor/pagination/paging.js"></script>
+<script src='https://csdnimg.cn/public/common/gotop/js/goTop-v1.0.min.js?v201803151422'></script>
+<script>
+    GoTop({
+        right: 8,
+        hasReport: true,
+        reportFun: function() {
+            showReport(false,"一小时学会 Redis 数据库");
+        }
+    })
+</script>
+<script src="https://csdnimg.cn/release/phoenix/template/js/common-da13470b4c.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/template/js/detail-e0d3bbff39.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/themes/skin-yellow/skin-yellow-22f3069ef3.min.js"></script>
+</body>
+<div class="box-box-default">
+    <a class="btn-remove">
+        关闭
+    </a>
+    <script type="text/javascript" src="//cee1.iteye.com/mhzzjepzz.js"></script>
+</div>
+<div class="box-box-large">
+    <a class="btn-remove">
+        关闭
+    </a>
+    <script type="text/javascript" src="//cee1.iteye.com/idvveasfs.js"></script>
+</div>
+<!-- 第四范式SDK -->
+<script src="https://nbrecsys.4paradigm.com/resource/js/sdk-csdn-smallflow.prod.0711.js" async defer></script>
+
+<!-- 高亮未与 markdown兼容  -->
+	<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.1.10/ckeditor/plugins/chart/chart.css" />
+	<script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.1.10/ckeditor/plugins/chart/lib/chart.min.js"></script>
+	<script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.1.10/ckeditor/plugins/chart/widget2chart.js"></script>
+	<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.1.10/ckeditor/plugins/codesnippet/lib/highlight/styles/dracula.css">
+	<script type="text/javascript" src="https://csdnimg.cn/release/phoenix/production/pc_wap_common-93244aa03c.js" /></script>
+
+	<script type="text/javascript">
+	$(function(){
+		var allEscRegex = /&(lt|gt|amp|quot|nbsp|shy|#\d{1,5});/g,
+		    namedEntities = {
+					lt: '<',
+					gt: '>',
+					amp: '&',
+					quot: '"',
+					nbsp: '\u00a0',
+					shy: '\u00ad'
+				}
+		var allEscDecode = function( match, code ) {
+				return namedEntities[ code ];
+		};
+		htmlDecodeAttr = function( text ) {
+				return text.replace( allEscRegex, allEscDecode );
+		}
+	  hljs.initHighlightingOnLoad();
+	  hljs.initCopyButtonOnLoad();
+	  hljs.initLineNumbersOnLoad();
+		if($('pre .language-plain').length>0){
+			$('pre .language-plain').each(function(i,e){
+				var highlightRe = hljs.highlightAuto(htmlDecodeAttr(e.innerHTML))
+				e.innerHTML = highlightRe.value;
+				e.className = 'language-'+highlightRe.language;
+			});
+		}
+	})
+	</script>
+</html>
